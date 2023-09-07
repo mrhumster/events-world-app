@@ -1,8 +1,8 @@
-.social-container {
+.social_container {
     margin: 20px 0;
 }
 
-.social-container a {
+.social_container a {
     border: 1px solid #DDDDDD;
     border-radius: 50%;
     display: inline-flex;

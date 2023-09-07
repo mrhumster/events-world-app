@@ -55,7 +55,8 @@ async def update_student_data(id: str, req: UpdateUserModel = Body(...)):
 
 @router.post("/token", response_model=Token)
 async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends()):
-    user = authenticate_user(form_data.username, form_data.password)
+    user = await authenticate_user(form_data.username, form_data.password)
+    print('*** ***', user)
     if not user:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
@@ -64,13 +65,13 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
         )
     access_token_expires = timedelta(minutes=Config.ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
-        data={"sub": user.username}, expires_delta=access_token_expires
+        data={"sub": user['username']}, expires_delta=access_token_expires
     )
     return {"access": access_token, "refresh": "Sorry, this method not implement", "user": user, "token_type": "bearer"}
 
 @router.post("/create", response_model=Token)
 async def create_user(register_form: UserRegister):
-
+    print(register_form)
     attributes = {
         'username': register_form.username,
         'hashed_password': create_password_hash(register_form.password),

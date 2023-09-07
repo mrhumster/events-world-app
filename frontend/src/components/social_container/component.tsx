@@ -1,7 +1,6 @@
 import React from "react";
 import './styles.css'
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faFaceDizzy, faFaceGrin, faFaceKiss} from "@fortawesome/free-solid-svg-icons";
 import {faFacebook, faLinkedin, faGooglePlus} from "@fortawesome/free-brands-svg-icons";
 
 export const SocialContainer = () => {

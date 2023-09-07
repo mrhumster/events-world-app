@@ -1,4 +1,2 @@
-export {InputText} from './input-text'
-export {Button} from './button'
-export {Overlay} from './overlay'
-export {SocialContainer} from './social-container'
+export {SocialContainer} from './social_container'
+export {Navigationbar} from './navigation'

@@ -257,3 +257,9 @@ cython_debug/
 
 /data/
 /nginx/ssl/
+/frontend/.idea/
+/frontend/.idea/inspectionProfiles/
+/frontend/.idea/.gitignore
+/frontend/.idea/events-world-app.iml
+/frontend/.idea/modules.xml
+/frontend/.idea/vcs.xml

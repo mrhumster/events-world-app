@@ -12,3 +12,69 @@ body {
     height: 100vh;
     margin: 0 0 0;
 }
+
+.search_result {
+    position: absolute;
+    display: block;
+    top: 10%;
+    left: 35%;
+    z-index: 1000;
+    width: 30rem;
+}
+
+.search_button {
+    margin-left: 120px;
+    width: 200px;
+    cursor: pointer;
+}
+.search_body {
+    min-height: 150px;
+    max-height: 60vw;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+.name {
+    max-width: 25rem;
+    text-align: left;
+    text-wrap: normal;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    font-size: 16px;
+    padding-bottom: 5px;
+}
+.description {
+    max-width: 25rem;
+    text-align: left;
+    text-wrap: normal;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    font-size: smaller;
+    padding-bottom: 5px;
+}
+.position {
+    text-align: left;
+}
+
+.search_body::-webkit-scrollbar {
+  width: 4px;               /* width of the entire scrollbar */
+}
+
+.search_body::-webkit-scrollbar-track {
+  background: white;        /* color of the tracking area */
+}
+
+.search_body::-webkit-scrollbar-thumb {
+  background-color: #cbcbcb;    /* color of the scroll thumb */
+  border-radius: 2px;       /* roundness of the scroll thumb */
+}
+.search_button_text {
+    font-size: 16px;
+    padding-left: 15px;
+    padding-right: 25px;
+    color: dimgray;
+}
+.search_button_text:hover {
+    color: white;
+}

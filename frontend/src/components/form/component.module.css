@@ -1,8 +1,8 @@
-.social-container {
+.social_container {
     margin: 20px 0;
 }
 
-.social-container a {
+.social_container a {
     border: 1px solid #DDDDDD;
     border-radius: 50%;
     display: inline-flex;
@@ -13,7 +13,7 @@
     width: 40px;
 }
 
-form {
+form.login_form {
     background-color: #FFFFFF;
     display: flex;
     align-items: center;
@@ -24,7 +24,7 @@ form {
     text-align: center;
 }
 
-input {
+input.login_form {
     background-color: #eee;
     border: none;
     padding: 12px 15px;

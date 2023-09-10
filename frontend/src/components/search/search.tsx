@@ -1,30 +1,18 @@
-import Form from 'react-bootstrap/Form';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import React, {useEffect, useState} from "react";
+import React from "react";
+import styles from "../../pages/home/styles.module.css";
+import {Button} from "react-bootstrap";
+import {faMagnifyingGlass} from "@fortawesome/free-solid-svg-icons";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
-export const SearchInput = () => {
-    const [search, setSearch] = useState<String>('')
-    const handleChange = (e:any):void => {
-        setSearch(e.currentTarget.value)
+export const SearchInput = ({setShowSearch}:{setShowSearch:any}) => {
+    const handleClick = () => {
+        setShowSearch(true)
     }
-
-    useEffect(() => {
-        console.log(search)
-    }, [search])
-
     return (
-        <Form>
-        <Row>
-          <Col xs="auto">
-            <Form.Control
-              type="text"
-              placeholder="Поиск"
-              className=" mr-sm-2"
-              onChange={(e) => handleChange(e)}
-            />
-          </Col>
-        </Row>
-      </Form>
+        <Button variant="outline-primary" className="rounded-5 ms-5" onClick={handleClick}>
+          <FontAwesomeIcon icon={faMagnifyingGlass} />
+          <span className={styles.search_button_text}>Поиск</span>
+        </Button>
+
     )
 }

@@ -2,3 +2,12 @@
   width: calc(100vw);
   height: calc(100vh - 77px);
 }
+
+.node_popup {
+  min-width: 900px;
+}
+
+.chart_container {
+  width: 850px;
+  height: 450px;
+}

@@ -7,7 +7,7 @@ import {SearchInput} from '../search/'
 import {faWind} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
-export function Navigationbar() {
+export function Navigationbar({setShowSearch}:{setShowSearch?:any}) {
     const navigate = useNavigate();
     const handleLogout = () => {
         localStorage.removeItem("auth")
@@ -18,7 +18,7 @@ export function Navigationbar() {
     let search_input
 
     if (window.location.pathname === '/') {
-        search_input = <SearchInput />
+        search_input = <SearchInput setShowSearch={setShowSearch} />
     }
 
     return (

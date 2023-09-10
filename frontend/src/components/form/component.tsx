@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
-import './styles.css'
-import './csshake-hard.css'
+import styles from '../../pages/login/login.module.css'
+import component from './component.module.css'
 import {SocialContainer} from "../social_container";
 import { useUserActions } from "../../hooks"
 
@@ -117,43 +117,43 @@ export const Form = ({action = '#', type = 'login'}:{action: string, type: strin
     switch (type) {
         case 'login':
             content =
-                <form className={type} action={action} onSubmit={handleSubmit}>
+                <form className={[component.login_form, type].join(' ')} action={action} onSubmit={handleSubmit}>
                     <h1>Вход</h1>
                     <SocialContainer/>
                     <span>или зарегистрируй свой аккаунт</span>
 
-                    <input type="text" placeholder="Имя пользователя"
+                    <input className={component.login_form} type="text" placeholder="Имя пользователя"
                            onChange={(e) => handleChangeUsername(e)}/>
-                    { username.error && <small className="error">{username.error}</small>}
+                    { username.error && <small className={component.error}>{username.error}</small>}
 
-                    <input type="password" placeholder="Пароль"
+                    <input className={component.login_form} type="password" placeholder="Пароль"
                            onChange={(e) => handleChangePassword(e)}/>
-                    { password.error && <small className="error">{password.error}</small>}
+                    { password.error && <small className={component.error}>{password.error}</small>}
 
                     <a href="#">Забыли пароль</a>
-                    <button id="button_login" type="submit">Войти</button>
+                    <button className={styles.loging_form} id="button_login" type="submit">Войти</button>
                 </form>
             break
         case 'signup':
-            content = <form className={type} action={action} onSubmit={handleSubmit}>
+            content = <form className={[component.login_form,type].join(' ')} action={action} onSubmit={handleSubmit}>
                 <h1>Создайте пользователя</h1>
                 <SocialContainer/>
                 <span>или используй свою почту для входа</span>
-                <input type="text" placeholder="Имя пользователя" onChange={(e) => handleChangeUsername(e)}></input>
+                <input className={component.login_form} type="text" placeholder="Имя пользователя" onChange={(e) => handleChangeUsername(e)}></input>
 
-                <input type="email" placeholder="Почта"
+                <input className={component.login_form} type="email" placeholder="Почта"
                        onChange={(e) => handleChangeEmail(e)}/>
-                { email.error && <small className="error">{email.error}</small>}
+                { email.error && <small className={component.error}>{email.error}</small>}
 
-                <input type="password" placeholder="Пароль"
+                <input className={component.login_form} type="password" placeholder="Пароль"
                        onChange={(e) => handleChangePassword(e)}/>
-                { password.error && <small className="error">{password.error}</small>}
+                { password.error && <small className={component.error}>{password.error}</small>}
 
-                <input type="password" placeholder="Повтор пароля"
+                <input className={component.login_form} type="password" placeholder="Повтор пароля"
                            onChange={(e) => handleChangePassword2(e)}/>
-                    { password2.error && <small className="error">{password2.error}</small>}
+                    { password2.error && <small className={component.error}>{password2.error}</small>}
 
-                <button id="button_signup" type="submit">Зарегистрировать</button>
+                <button className={styles.loging_form} id="button_signup" type="submit">Зарегистрировать</button>
             </form>
             break
     }

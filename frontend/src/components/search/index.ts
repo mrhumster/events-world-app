@@ -1,1 +1,2 @@
-export {SearchInput} from './search'
+export {SearchInput} from './SearchInput'
+export {SearchResult} from './SearchResult'

@@ -1,10 +1,15 @@
 import React from "react";
-import styles from "../../pages/home/styles.module.css";
+import styles from "./styles.module.css";
 import {Button} from "react-bootstrap";
 import {faMagnifyingGlass} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
-export const SearchInput = ({setShowSearch}:{setShowSearch:any}) => {
+interface SearchInputProps {
+    setShowSearch:any
+}
+
+export const SearchInput = (props:SearchInputProps) => {
+    const {setShowSearch} = props
     const handleClick = () => {
         setShowSearch(true)
     }

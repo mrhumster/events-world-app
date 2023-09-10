@@ -1,2 +1,5 @@
-export {SocialContainer} from './social_container'
+export {SocialContainer} from './social'
 export {Navigationbar} from './navigation'
+export {Toaster} from './toaster'
+export {Map} from './map'
+export {SearchInput, SearchResult} from './search'

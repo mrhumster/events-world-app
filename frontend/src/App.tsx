@@ -4,14 +4,14 @@ import './App.css';
 import {Route, Routes} from "react-router-dom";
 import {ProtectedRoute} from "./routes";
 
-import {About, PageNotFound, Login, Home} from "./pages";
+import {About, PageNotFound, Login, MapPage} from "./pages";
 
 function App() {
   return (
     <Routes>
         <Route path="/" element={
             <ProtectedRoute>
-                <Home />
+                <MapPage />
             </ProtectedRoute>
         } />
         <Route path="/login/" element={ <Login /> } />

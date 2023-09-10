@@ -1,6 +1,17 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import { MapContainer, Marker, Popup, TileLayer, useMap, useMapEvent } from "react-leaflet";
-import {Chart as ChartJS, Tooltip, Legend, CategoryScale, LinearScale, BarElement, Title, PointElement, LineElement} from "chart.js";
+import {
+    Chart as ChartJS,
+    Tooltip,
+    Legend,
+    CategoryScale,
+    LinearScale,
+    BarElement,
+    Title,
+    PointElement,
+    LineElement,
+    ChartData
+} from "chart.js";
 import {Bar} from "react-chartjs-2";
 import styles from './styles.module.css'
 import 'leaflet/dist/leaflet.css';
@@ -23,7 +34,33 @@ const defaultPosition = {
   zoom: 7
 };
 
-function MapEvents({setShowSearch, setMarkerList}:{setShowSearch:any, setMarkerList:any}) {
+interface MapEventsProps {
+    setShowSearch:any,
+    setMarkerList:any
+}
+
+interface LatLang {
+    lat: Number,
+    lng: Number
+}
+
+interface StatisticProps {
+    object: any
+}
+
+interface MarkerListProps {
+    objects:any
+}
+
+interface MapProps {
+    setShowSearch:any,
+    markerList:any,
+    setMarkerList:any
+}
+
+function MapEvents(props:MapEventsProps) {
+    const {setShowSearch, setMarkerList} = props
+
     const clickHandler = useMapEvent('click', (e) => {
        setShowSearch(false)
     })
@@ -42,7 +79,8 @@ function MapEvents({setShowSearch, setMarkerList}:{setShowSearch:any, setMarkerL
   return null
 }
 
-const Statistic = ({object}:{object:any}) => {
+const Statistic = (props:StatisticProps) => {
+    const {object} = props
     const [data, setData] = useState<any>()
     const [fetching, setFetch] = useState<boolean>(false)
     let coordinates = object.latlng
@@ -68,10 +106,8 @@ const Statistic = ({object}:{object:any}) => {
         return averagedChunks.flat();
     }
 
-    // @ts-ignore
-    function fetchData(coordinates: any){
+    function fetchData(coordinates:LatLang){
         setFetch(true)
-        // @ts-ignore
         const API_OPEN_METEO = `https://air-quality-api.open-meteo.com/v1/air-quality?latitude=${coordinates.lat}&longitude=${coordinates.lng}&hourly=pm10,pm2_5`
 
         fetch(API_OPEN_METEO)
@@ -99,8 +135,8 @@ const Statistic = ({object}:{object:any}) => {
         const isoTime = data.hourly.time;
         const pm10 = data.hourly.pm10;
         const pm2_5 = data.hourly.pm2_5;
-        const lineDataPM10 = getLineData(pm10, 20);
-        const lineDataPM2_5 = getLineData(pm2_5, 20);
+        const lineDataPM10 = getLineData(pm10, 24);
+        const lineDataPM2_5 = getLineData(pm2_5, 24);
 
         const options = {
             scales: {
@@ -108,50 +144,55 @@ const Statistic = ({object}:{object:any}) => {
                     beginAtZero: true
                 },
             },
+            responsive: true,
+            maintainAspectRatio: false,
             plugins: {
                 title: {
                     display: true,
-                    text: `Статистика по загрязнению воздуха в точке с координатами широта: ${data.latitude} долгота: ${data.longitude}`
-                }
+                    font: {size: 18},
+                    text: [`Статистика по загрязнению воздуха`, `Координаты: [${data.latitude}, ${data.longitude}]`]
+                },
             }
         }
 
-        const chart_data: any = {
+        const chart_data: ChartData = {
             labels: isoTime.map((item: string) => new Date(item).toLocaleTimeString()),
             datasets: [
                 {
-                    label: 'PM2_5',
+                    label: 'Частицы 2.5 мкм',
                     data: data.hourly.pm2_5,
-                    borderWidth: 1,
-                    borderColor: "#7375D8",
+                    borderWidth: 2,
+                    borderColor: "rgba(115,117,216,0.55)",
                 },
                 {
-                    label: 'PM10',
+                    label: 'Частицы 10 мкм',
                     data: data.hourly.pm10,
-                    borderWidth: 1,
-                    borderColor: "#FF7373",
+                    borderWidth: 2,
+                    borderColor: "rgba(255,115,115,0.5)",
                 },
+
                 {
-                    label: 'Среднее значение за сутки параметра PM10',
-                    data: lineDataPM10,
-                    type: 'line',
-                    borderColor: "#A60000",
-                    fill: false,
-                    borderWidth: 1,
-                    order: 1
-                },
-                {
-                    label: 'Среднее значение за сутки параметра PM2_5',
+                    label: 'Среднее за сутки 2.5 мкм',
                     data: lineDataPM2_5,
                     type: 'line',
-                    borderColor: "#080B74",
+                    borderColor: "#7375D8",
                     fill: false,
-                    borderWidth: 1,
+                    borderWidth: 2,
                     order: 1
-                }
+                },
+                {
+                    label: 'Среднее за сутки 10 мкм',
+                    data: lineDataPM10,
+                    type: 'line',
+                    borderColor: "#FF7373",
+                    fill: false,
+                    borderWidth: 2,
+                    order: 1
+                },
             ]
         }
 
+        // @ts-ignore
         bar = <Bar options={options} data={chart_data} />;
     }
 
@@ -165,14 +206,18 @@ const Statistic = ({object}:{object:any}) => {
     )
 }
 
-const MarkerList = ({objects}:{objects:any}) => {
+const MarkerList = (props:MarkerListProps) => {
+    const {objects} = props
     const Map = useMap()
 
     const icon = L.icon({
-        iconUrl: require('../../images/star.png'),
-        iconSize: [26, 26],
-        iconAnchor: [13, 13],
-        popupAnchor: [0, 0],
+        iconUrl: require('../../images/pin.png'),
+        iconSize: [26, 36],
+        iconAnchor: [13, 36],
+        popupAnchor: [0, -36],
+        shadowUrl: require('../../images/pin_shadow.png'),
+        shadowSize:   [46, 36],
+        shadowAnchor: [12, 36]
     })
 
     useEffect(() => {
@@ -181,6 +226,7 @@ const MarkerList = ({objects}:{objects:any}) => {
             Map.flyTo(last_marker.latlng)
         }
     }, [objects])
+
 
     return (
         <>
@@ -195,7 +241,8 @@ const MarkerList = ({objects}:{objects:any}) => {
     )
 }
 
-export const Map = ({setShowSearch, markerList, setMarkerList}:{setShowSearch:any, markerList:any, setMarkerList:any}) => {
+export const Map = (props:MapProps) => {
+    const {setShowSearch, markerList, setMarkerList} = props
     const [loc, setLoc] = useState<[number, number]>([defaultPosition.lat, defaultPosition.lng]);
 
     return (

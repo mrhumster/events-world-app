@@ -1,6 +1,6 @@
 .map {
   width: calc(100vw);
-  height: calc(100vh - 77px);
+  height: calc(100vh - 64px);
 }
 
 .node_popup {

@@ -38,3 +38,10 @@ input.login_form {
     font-size: 10px;
     padding-bottom: 10px;
 }
+
+a.login_form {
+    color: #333;
+    font-size: 14px;
+    text-decoration: none;
+    margin: 15px 0;
+}

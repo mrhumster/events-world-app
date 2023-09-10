@@ -1,4 +1,4 @@
 export {Login} from './login'
-export {Home} from  './home'
-export {PageNotFound} from './PageNotFound'
+export {MapPage} from './map_page'
+export {PageNotFound} from './page_not_found'
 export {About} from './about'

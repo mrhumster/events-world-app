@@ -85,7 +85,7 @@ async def create_user(register_form: UserRegister):
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
             detail={
-                'error': f'Operation not permitted, user with username {register_form.username} already exists.'
+                'error': f'Пользователь с именем "{register_form.username}" уже существует.'
             },
             headers={'WWW-Authenticate': 'Bearer'}
         )

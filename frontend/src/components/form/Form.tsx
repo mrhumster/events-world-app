@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
-import styles from '../../pages/login/login.module.css'
-import component from './component.module.css'
-import {SocialContainer} from "../social_container";
+import styles from '../../pages/login/styles.module.css'
+import component from './styles.module.css'
+import {SocialContainer} from "../social";
 import { useUserActions } from "../../hooks"
 
 export interface ValidateString {
@@ -9,8 +9,14 @@ export interface ValidateString {
     error: string;
 }
 
-export const Form = ({action = '#', type = 'login'}:{action: string, type: string}) => {
+interface FormProps {
+    action: string,
+    type: string,
+    toast:any
+}
 
+export const Form = (props: FormProps) => {
+    const {action, type, toast} = props
     const [email, setEmail] = useState<ValidateString>({value: '', error: ''})
     const [username, setUsername] = useState<ValidateString>({value: '', error: ''})
     const [password, setPassword] = useState<ValidateString>({value: '', error: ''})
@@ -30,7 +36,12 @@ export const Form = ({action = '#', type = 'login'}:{action: string, type: strin
                 };
                 userActions.login(data).catch((err) => {
                     if (err.message) {
-                        console.log(err)
+                        if (err.response.status === 401) {
+                            toast.setToastTitle('Ошибка')
+                            toast.setToastMessage(err.response.data.detail)
+                            toast.setToastType('danger')
+                            toast.setShowToast(true)
+                        }
                     }
                 });
 
@@ -45,7 +56,11 @@ export const Form = ({action = '#', type = 'login'}:{action: string, type: strin
                 };
                 userActions.register(data).catch((err) => {
                     if (err.message) {
-                        console.log(err)
+                        console.error(err)
+                        toast.setToastTitle('Ошибка')
+                        toast.setToastMessage(err.response.data.detail.error)
+                        toast.setToastType('danger')
+                        toast.setShowToast(true)
                     }
                 });
             }
@@ -73,11 +88,15 @@ export const Form = ({action = '#', type = 'login'}:{action: string, type: strin
     }
 
     const validatePassword = (password: ValidateString) => {
-        return password.value.length >= 8
+        return password.value.match(/^[a-z]+$/)
     }
 
     const validatePassword2 = (password2: ValidateString) => {
         return password2.value === password.value
+    }
+
+    const validateUsername = (username: ValidateString) => {
+        return username.value.match(/^[a-zA-Z0-9]+$/)
     }
 
     useEffect(():void => {
@@ -85,7 +104,7 @@ export const Form = ({action = '#', type = 'login'}:{action: string, type: strin
             setPassword(pervState => {
                 return {
                     ...pervState,
-                    error: 'Пароль должен быть не менее 8 символов'
+                    error: 'Только латинские буквы в нижнем регистре'
                 }
             })
         }
@@ -113,6 +132,17 @@ export const Form = ({action = '#', type = 'login'}:{action: string, type: strin
         }
     }, [email])
 
+    useEffect(():void => {
+        if (!validateUsername(username) && !username.error) {
+            setUsername(pervState => {
+                return {
+                    ...pervState,
+                    error: 'Только латинские буквы и цифры'
+                }
+            })
+        }
+    }, [username])
+
     let content: JSX.Element
     switch (type) {
         case 'login':
@@ -130,7 +160,7 @@ export const Form = ({action = '#', type = 'login'}:{action: string, type: strin
                            onChange={(e) => handleChangePassword(e)}/>
                     { password.error && <small className={component.error}>{password.error}</small>}
 
-                    <a href="#">Забыли пароль</a>
+                    <a className={component.login_form} href="#">Забыли пароль</a>
                     <button className={styles.loging_form} id="button_login" type="submit">Войти</button>
                 </form>
             break
@@ -139,7 +169,9 @@ export const Form = ({action = '#', type = 'login'}:{action: string, type: strin
                 <h1>Создайте пользователя</h1>
                 <SocialContainer/>
                 <span>или используй свою почту для входа</span>
-                <input className={component.login_form} type="text" placeholder="Имя пользователя" onChange={(e) => handleChangeUsername(e)}></input>
+                <input className={component.login_form} type="text" placeholder="Имя пользователя"
+                       onChange={(e) => handleChangeUsername(e)}></input>
+                { username.error && <small className={component.error}>{username.error}</small>}
 
                 <input className={component.login_form} type="email" placeholder="Почта"
                        onChange={(e) => handleChangeEmail(e)}/>

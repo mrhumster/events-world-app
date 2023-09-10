@@ -1,12 +1,32 @@
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 
+interface LoginDataIFace {
+    username: string,
+    password: string
+}
+
+interface SignUpDataIFace extends LoginDataIFace {
+    email: string
+}
+
+interface UserIFace {
+    username: string,
+    email: string
+}
+
+interface UserDataIFace {
+    access: string,
+    refresh: string,
+    user: UserIFace
+}
+
 export function useUserActions() {
     const navigate = useNavigate();
     const baseURL = "https://base/api";
 
     // Login user
-    function login(data: any) {
+    function login(data: LoginDataIFace) {
         const params = new URLSearchParams()
 
         params.append('username', data.username)
@@ -19,16 +39,14 @@ export function useUserActions() {
         }
         return axios.post(`${baseURL}/users/token`, params, config)
             .then((res) => {
-                // Registering the account and tokens in the store
                 setUserData(res.data);
                 navigate("/")
             });
     }
 
-    function register(data: any) {
+    function register(data: SignUpDataIFace) {
         return axios.post(`${baseURL}/users/create`, data)
             .then((res) => {
-                // Registering the account and tokens in the store
                 setUserData(res.data);
                 navigate("/")
             });
@@ -48,29 +66,28 @@ export function useUserActions() {
     };
 }
 
-// Get the user
 export function getUser() {
-    const auth = JSON.parse(localStorage.getItem("auth")!);
+    const auth:UserDataIFace = JSON.parse(localStorage.getItem("auth")!);
     if (auth) {
         return auth.user;
     }
     return null
 }
 
-// Get the access token
+
 export function getAccessToken() {
-    const auth = JSON.parse(localStorage.getItem("auth")!);
+    const auth:UserDataIFace = JSON.parse(localStorage.getItem("auth")!);
     return auth.access;
 }
 
-// Get the refresh token
+
 export function getRefreshToken() {
-    const auth = JSON.parse(localStorage.getItem("auth")!);
+    const auth:UserDataIFace = JSON.parse(localStorage.getItem("auth")!);
     return auth.refresh;
 }
 
-// Set the access, token and user property
-export function setUserData(data: any) {
+
+export function setUserData(data: UserDataIFace) {
     localStorage.setItem("auth", JSON.stringify({
         access: data.access,
         refresh: data.refresh,

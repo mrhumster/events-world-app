@@ -1,9 +1,29 @@
 import React, {useState} from "react";
-import styles from './login.module.css';
+import styles from './styles.module.css';
 import {Form} from "../../components/form";
+import { Toaster } from "../../components";
+
+interface ToasterIFace {
+    setToastTitle: React.Dispatch<React.SetStateAction<string>>,
+    setToastMessage: React.Dispatch<React.SetStateAction<string>>,
+    setToastType: React.Dispatch<React.SetStateAction<string>>,
+    setShowToast: React.Dispatch<React.SetStateAction<boolean>>
+}
 
 export const Login = () => {
     const [rightPanelActive, setRightPanelActive] = useState(false)
+    const [showToast, setShowToast] = useState(false);
+    const [toastMessage, setToastMessage] = useState("");
+    const [toastType, setToastType] = useState("");
+    const [toastTitle, setToastTitle] = useState("");
+
+    const toast: ToasterIFace = {
+        setToastTitle: setToastTitle,
+        setToastMessage: setToastMessage,
+        setToastType: setToastType,
+        setShowToast: setShowToast
+    }
+
     const setClassRightPanelActive = () => {
         if (rightPanelActive) {
             return styles.right_panel_active
@@ -16,10 +36,10 @@ export const Login = () => {
         <div className={styles.login_page}>
             <div className={[styles.container, setClassRightPanelActive()].join(' ')} id="container">
                 <div className={[styles.form_container, styles.sign_up_container].join(' ')}>
-                    <Form action="#" type="signup"></Form>
+                    <Form action="#" type="signup" toast={toast}></Form>
                 </div>
                 <div className={[styles.form_container, styles.sign_in_container].join(' ')}>
-                    <Form action="#" type="login"></Form>
+                    <Form action="#" type="login" toast={toast}></Form>
                 </div>
                 <div className={styles.overlay_container}>
                     <div className={styles.overlay}>
@@ -36,6 +56,13 @@ export const Login = () => {
                     </div>
                 </div>
             </div>
+            <Toaster
+                title={toastTitle}
+                message={toastMessage}
+                showToast={showToast}
+                type={toastType}
+                onClose={() => setShowToast(false)}
+            />
         </div>
     )
 }

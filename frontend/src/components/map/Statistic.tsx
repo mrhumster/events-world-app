@@ -15,7 +15,7 @@ import {
     LineElement
 } from "chart.js";
 import {Spinner, Tab, Table, Tabs} from "react-bootstrap";
-import {LatLngLiteral} from "leaflet";
+import L, {LatLngLiteral} from "leaflet";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
 
@@ -34,7 +34,6 @@ interface StatisticProps {
 }
 
 function TableData(props: { data:any }) {
-    console.log(props.data)
     const {data} = props
 
     return (

@@ -5,7 +5,7 @@ import {useLocation, useNavigate} from "react-router-dom";
 import {getUser} from '../../hooks';
 import {SearchInput} from '../search/'
 
-import {faCloud, faHeadSideMask} from "@fortawesome/free-solid-svg-icons";
+import {faCloud} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCircleUser} from "@fortawesome/free-regular-svg-icons";
 

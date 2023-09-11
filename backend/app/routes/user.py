@@ -71,7 +71,6 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
 
 @router.post("/create", response_model=Token)
 async def create_user(register_form: UserRegister):
-    print(register_form)
     attributes = {
         'username': register_form.username,
         'hashed_password': create_password_hash(register_form.password),

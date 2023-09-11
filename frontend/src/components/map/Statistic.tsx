@@ -108,7 +108,7 @@ export const Statistic = (props:StatisticProps) => {
     useEffect(() => fetchData(coordinates), [coordinates])
 
     useEffect(() => {
-        setTimeout(()=>setFetch(false), 1000)
+        setTimeout(()=>setFetch(false), 2000)
     }, [data])
 
     let bar, table;

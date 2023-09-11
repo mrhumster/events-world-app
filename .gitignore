@@ -255,7 +255,7 @@ cython_debug/
 #.idea/
 
 /data/
-/nginx/ssl/
+
 /frontend/.idea/
 /frontend/.idea/inspectionProfiles/
 /frontend/.idea/.gitignore

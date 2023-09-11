@@ -51,7 +51,8 @@ async def delete_user(id: str):
         await user_collection.delete_one({"_id": ObjectId(id)})
         return True
 
-async def get_user(username: str) -> dict:
+async def get_user(username: str) -> dict | bool:
     user = await user_collection.find_one({"username": username})
     if user:
         return user_helper(user)
+    return False

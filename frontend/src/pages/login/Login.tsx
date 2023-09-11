@@ -1,5 +1,6 @@
 import React, {useState} from "react";
-import { HomeForm, Toaster, FormType } from "../..";
+import {FormType, HomeForm, Toaster } from "../../components";
+
 import styles from './styles.module.css';
 
 export interface ToasterIFace {

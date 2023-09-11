@@ -1,8 +1,9 @@
 
 import {Card, Container} from "react-bootstrap";
 import React from "react";
-import { Navigationbar } from "../..";
+
 import image from '../../images/oblaka.jpg'
+import { Navigationbar } from "../../components";
 
 export const About = () => {
 

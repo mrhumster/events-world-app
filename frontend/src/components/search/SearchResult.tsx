@@ -12,7 +12,7 @@ import { SearchItem } from "./SearchItem";
 
 
 interface SearchResultProps {
-    featureMember:any,
+    featureMember:[],
     setFeatureMember:any,
     setShowSearch:any,
     setMarkerList:any

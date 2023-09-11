@@ -26,7 +26,7 @@ function Position(props:PositionProps) {
 
 export const SearchItem = (props:SearchItemProps) => {
     const {item, setShowSearch, setMarkerList} = props
-    const handleClickResult = (e:any) => {
+    const handleClickResult = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
 
         item['latlng'] = {
             'lng': parseFloat(item.GeoObject.Point.pos.split(' ')[0]),

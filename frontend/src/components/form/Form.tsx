@@ -3,16 +3,21 @@ import styles from '../../pages/login/styles.module.css'
 import component from './styles.module.css'
 import {SocialContainer} from "../social";
 import { useUserActions } from "../../hooks"
+import {ToasterIFace} from "../../pages/login";
 
 export interface ValidateString {
     value: string;
     error: string;
 }
+export enum FormType {
+    login = 'login',
+    signup = 'signup'
+}
 
 interface FormProps {
     action: string,
-    type: string,
-    toast:any
+    type: FormType,
+    toast: ToasterIFace
 }
 
 export const Form = (props: FormProps) => {
@@ -24,10 +29,9 @@ export const Form = (props: FormProps) => {
 
     const userActions = useUserActions();
 
-    const handleSubmit = (event: any) => {
-        const form = event.target
+    const handleSubmit = (event:  React.FormEvent) => {
         event.preventDefault()
-        if (form.classList.contains('login')) {
+        if (type === FormType.login) {
             if (!username.error && !password.error) {
                 console.log('Форма без ошибок')
                 const data = {
@@ -46,7 +50,7 @@ export const Form = (props: FormProps) => {
                 });
 
             }
-        } else if (form.classList.contains('signup')) {
+        } else if (type === FormType.signup) {
             if (!email.error && !password.error && !password2.error && !username.error) {
                 console.log('Форма без ошибок')
                 const data = {
@@ -145,7 +149,7 @@ export const Form = (props: FormProps) => {
 
     let content: JSX.Element
     switch (type) {
-        case 'login':
+        case FormType.login:
             content =
                 <form className={[component.login_form, type].join(' ')} action={action} onSubmit={handleSubmit}>
                     <h1>Вход</h1>
@@ -164,7 +168,7 @@ export const Form = (props: FormProps) => {
                     <button className={styles.loging_form} id="button_login" type="submit">Войти</button>
                 </form>
             break
-        case 'signup':
+        case FormType.signup:
             content = <form className={[component.login_form,type].join(' ')} action={action} onSubmit={handleSubmit}>
                 <h1>Создайте пользователя</h1>
                 <SocialContainer/>

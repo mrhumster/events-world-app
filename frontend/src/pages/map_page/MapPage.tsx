@@ -3,12 +3,13 @@ import {Navigationbar, SearchResult} from "../../components";
 import styles from './styles.module.css'
 import { Map } from "../../components";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import {MarkerIFace} from "../../components/map";
 
 
 export const MapPage = () => {
     const [showSearch, setShowSearch] = useState<boolean>(false)
     const [featureMember, setFeatureMember] = useState<any>()
-    const [markerList, setMarkerList] = useState<[]>([])
+    const [markerList, setMarkerList] = useState<MarkerIFace[] | undefined>()
 
     return (
         <>

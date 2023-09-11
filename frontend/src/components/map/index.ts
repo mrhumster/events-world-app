@@ -1,1 +1,5 @@
 export {Map} from './Map'
+export {Statistic} from './Statistic'
+export {MarkerList} from './MarkerList'
+export {MapEvents} from './MapEvents'
+export type {MarkerIFace} from './Map'

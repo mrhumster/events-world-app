@@ -10,7 +10,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCircleUser} from "@fortawesome/free-regular-svg-icons";
 
 interface NavigationbarProps {
-    setShowSearch?:any
+    setShowSearch?:React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export function Navigationbar(props:NavigationbarProps) {

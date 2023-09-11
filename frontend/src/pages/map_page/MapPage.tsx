@@ -1,6 +1,5 @@
 import React, {useState} from "react";
 import {FeatureMemberItemIFace, Navigationbar, SearchResult} from "../../components";
-import styles from './styles.module.css'
 import { Map } from "../../components";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {MarkerIFace} from "../../components/map";

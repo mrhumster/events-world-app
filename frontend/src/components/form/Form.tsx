@@ -20,7 +20,7 @@ interface FormProps {
     toast: ToasterIFace
 }
 
-export const Form = (props: FormProps) => {
+export const HomeForm = (props: FormProps) => {
     const {action, type, toast} = props
     const [email, setEmail] = useState<ValidateString>({value: '', error: ''})
     const [username, setUsername] = useState<ValidateString>({value: '', error: ''})
@@ -158,11 +158,11 @@ export const Form = (props: FormProps) => {
 
                     <input className={component.login_form} type="text" placeholder="Имя пользователя"
                            onChange={(e) => handleChangeUsername(e)}/>
-                    { username.error && <small className={component.error}>{username.error}</small>}
+                    <small className={component.error}>{username.error}</small>
 
                     <input className={component.login_form} type="password" placeholder="Пароль"
                            onChange={(e) => handleChangePassword(e)}/>
-                    { password.error && <small className={component.error}>{password.error}</small>}
+                    <small className={component.error}>{password.error}</small>
 
                     <a className={component.login_form} href="#">Забыли пароль</a>
                     <button className={styles.loging_form} id="button_login" type="submit">Войти</button>
@@ -175,19 +175,19 @@ export const Form = (props: FormProps) => {
                 <span>или используй свою почту для входа</span>
                 <input className={component.login_form} type="text" placeholder="Имя пользователя"
                        onChange={(e) => handleChangeUsername(e)}></input>
-                { username.error && <small className={component.error}>{username.error}</small>}
+                <small className={component.error}>{username.error}</small>
 
                 <input className={component.login_form} type="email" placeholder="Почта"
                        onChange={(e) => handleChangeEmail(e)}/>
-                { email.error && <small className={component.error}>{email.error}</small>}
+                <small className={component.error}>{email.error}</small>
 
                 <input className={component.login_form} type="password" placeholder="Пароль"
                        onChange={(e) => handleChangePassword(e)}/>
-                { password.error && <small className={component.error}>{password.error}</small>}
+                <small className={component.error}>{password.error}</small>
 
                 <input className={component.login_form} type="password" placeholder="Повтор пароля"
                            onChange={(e) => handleChangePassword2(e)}/>
-                    { password2.error && <small className={component.error}>{password2.error}</small>}
+                    <small className={component.error}>{password2.error}</small>
 
                 <button className={styles.loging_form} id="button_signup" type="submit">Зарегистрировать</button>
             </form>

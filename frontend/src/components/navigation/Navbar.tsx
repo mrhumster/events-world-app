@@ -5,7 +5,7 @@ import {useLocation, useNavigate} from "react-router-dom";
 import {getUser} from '../../hooks';
 import {SearchInput} from '../search/'
 
-import {faHeadSideMask} from "@fortawesome/free-solid-svg-icons";
+import {faCloud, faHeadSideMask} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCircleUser} from "@fortawesome/free-regular-svg-icons";
 
@@ -37,7 +37,7 @@ export function Navigationbar(props:NavigationbarProps) {
         <Navbar bg="white" variant="pills" className="shadow-lg">
             <Container>
                 <Navbar.Brand href="/">
-                    <FontAwesomeIcon icon={faHeadSideMask} shake style={{color: "#2400ff",}} />{' '}
+                    <FontAwesomeIcon icon={faCloud} style={{color: "#174492",}} />{' '}
                     <span className="navbar-brand fw-light text-primary ms-2 text-uppercase" id="logo">Чистый воздух</span>
                 </Navbar.Brand>
                 <Nav>
@@ -47,7 +47,7 @@ export function Navigationbar(props:NavigationbarProps) {
                 { isThisPath('/') ? <SearchInput setShowSearch={setShowSearch} /> : <></>}
                 <Navbar.Collapse className="justify-content-end">
                     <Nav>
-                        <NavDropdown menuVariant="light"
+                        <NavDropdown className="me-5" menuVariant="light"
                             title={
                             <Button size="sm" variant="link" className="text-uppercase link-offset-3">
                                 <FontAwesomeIcon icon={faCircleUser} size='xl' />{' '}{user.username}

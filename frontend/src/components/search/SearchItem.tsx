@@ -4,15 +4,17 @@ import {Button, Container, ListGroup} from "react-bootstrap";
 import Row from "react-bootstrap/Row";
 import styles from "./styles.module.css";
 import React from "react";
+import {MarkerIFace} from "../map";
+import {FeatureMemberItemIFace} from "./SearchResult";
 
 interface PositionProps {
     position: string
 }
 
 interface SearchItemProps {
-    item:any,
-    setShowSearch:any,
-    setMarkerList:any
+    item:FeatureMemberItemIFace,
+    setShowSearch: React.Dispatch<React.SetStateAction<boolean>>,
+    setMarkerList:React.Dispatch<React.SetStateAction<MarkerIFace[] | undefined>>
 }
 
 function Position(props:PositionProps) {
@@ -26,15 +28,22 @@ function Position(props:PositionProps) {
 
 export const SearchItem = (props:SearchItemProps) => {
     const {item, setShowSearch, setMarkerList} = props
+    console.log(item)
     const handleClickResult = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
 
         item['latlng'] = {
             'lng': parseFloat(item.GeoObject.Point.pos.split(' ')[0]),
             'lat': parseFloat(item.GeoObject.Point.pos.split(' ')[1]),
         }
+
         setShowSearch(false)
-        // @ts-ignore
-        setMarkerList(prev => ([...prev,item]))
+
+        setMarkerList((prev:MarkerIFace[] | undefined) => {
+            if (prev) {
+                return [...prev, item]
+            }
+            return [item]
+        })
     }
     return (
         <ListGroup.Item className='p-1'>

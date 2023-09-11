@@ -66,7 +66,7 @@ body {
 }
 
 .search_body::-webkit-scrollbar-thumb {
-  background-color: #cbcbcb;    /* color of the scroll thumb */
+  background-color: #71acff;    /* color of the scroll thumb */
   border-radius: 2px;       /* roundness of the scroll thumb */
 }
 .search_button_text {

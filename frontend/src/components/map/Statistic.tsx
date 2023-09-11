@@ -14,8 +14,10 @@ import {
     PointElement,
     LineElement
 } from "chart.js";
-import { Spinner } from "react-bootstrap";
+import {Spinner, Tab, Table, Tabs} from "react-bootstrap";
 import {LatLngLiteral} from "leaflet";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
 
 ChartJS.register(
     CategoryScale,
@@ -29,6 +31,36 @@ ChartJS.register(
 );
 interface StatisticProps {
     object: any
+}
+
+function TableData(props: { data:any }) {
+    console.log(props.data)
+    const {data} = props
+
+    return (
+        <Table striped className="border-start border-bottom">
+           <thead>
+            <tr>
+              <th>Время</th>
+              <th>Частицы 2.5 {data.hourly_units.pm2_5}</th>
+              <th>Частицы 10 {data.hourly_units.pm10}</th>
+            </tr>
+          </thead>
+            <tbody>
+            {data.hourly.time.map((time:string, i:number) => {
+                const d = new Date(data.hourly.time[i])
+                return (
+                    <tr key={i}>
+                        <td>{d.toLocaleDateString()} {d.toLocaleTimeString()}</td>
+                        <td>{data.hourly.pm2_5[i]}</td>
+                        <td>{data.hourly.pm10[i]}</td>
+                    </tr>
+                )
+            })}
+
+            </tbody>
+        </Table>
+    )
 }
 
 export const Statistic = (props:StatisticProps) => {
@@ -77,10 +109,10 @@ export const Statistic = (props:StatisticProps) => {
     useEffect(() => fetchData(coordinates), [coordinates])
 
     useEffect(() => {
-        setFetch(false)
+        setTimeout(()=>setFetch(false), 1000)
     }, [data])
 
-    let bar;
+    let bar, table;
 
     if (data) {
         const isoTime = data.hourly.time;
@@ -103,16 +135,7 @@ export const Statistic = (props:StatisticProps) => {
             },
             responsive: true,
             maintainAspectRatio: false,
-            plugins: {
-                title: {
-                    display: true,
-                    color: '#4f4f4f',
-                    font: {
-                        size: 18
-                    },
-                    text: [`Прогноз по содержанию твердых частиц в воздухе`, `Координаты: [${data.latitude}, ${data.longitude}]`]
-                },
-            }
+
         }
 
         const chart_data: ChartData = {
@@ -160,6 +183,7 @@ export const Statistic = (props:StatisticProps) => {
 
         // @ts-ignore
         bar = <Bar options={options} data={chart_data} />;
+        table = <TableData data={data}></TableData>
     }
 
     if (fetching) {
@@ -173,10 +197,22 @@ export const Statistic = (props:StatisticProps) => {
     }
 
     return (
-        <>
-            <div className={styles.chart_container}>
-                {bar}
-            </div>
-        </>
+        <div className={styles.popup_content}>
+            <p className="p-2 m-0 text-center">Прогноз по содержанию твердых частиц в воздухе</p>
+            <span className="fst-italic p-2"><FontAwesomeIcon icon={faLocationDot} />{' '}{data.latitude} {data.longitude}</span>
+            <Tabs defaultActiveKey="diagram" className="mb-0" fill>
+                <Tab eventKey="diagram" title="Диаграмма" className="border-bottom border-start border-end">
+                    <div className={styles.chart_container}>
+                        {bar}
+                    </div>
+                </Tab>
+                <Tab eventKey="table" title="Таблица">
+                    <div className={styles.popup_table}>
+                        {table}
+                    </div>
+                </Tab>
+            </Tabs>
+
+        </div>
     )
 }

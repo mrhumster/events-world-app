@@ -19,3 +19,28 @@
   justify-content: center;
   align-items: center;
 }
+.popup_content {
+  width: 850px
+}
+
+.leaflet-popup-content {
+  width: 850px
+}
+
+.popup_table {
+  overflow-y: scroll;
+  height: 450px;
+}
+.popup_table::-webkit-scrollbar {
+  width: 4px;               /* width of the entire scrollbar */
+}
+
+.popup_table::-webkit-scrollbar-track {
+  background: white;        /* color of the tracking area */
+  border-right:1px solid #e7e7e7
+}
+
+.popup_table::-webkit-scrollbar-thumb {
+  background-color: #71acff;    /* color of the scroll thumb */
+  border-radius: 2px;       /* roundness of the scroll thumb */
+}

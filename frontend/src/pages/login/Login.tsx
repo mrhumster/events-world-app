@@ -1,8 +1,6 @@
 import React, {useState} from "react";
+import { HomeForm, Toaster, FormType } from "../..";
 import styles from './styles.module.css';
-import {Form} from "../../components/form";
-import {Toaster} from "../../components";
-import {FormType} from "../../components/form/Form";
 
 export interface ToasterIFace {
     setToastTitle: React.Dispatch<React.SetStateAction<string>>,
@@ -37,10 +35,10 @@ export const Login = () => {
         <div className={styles.login_page}>
             <div className={[styles.container, setClassRightPanelActive()].join(' ')} id="container">
                 <div className={[styles.form_container, styles.sign_up_container].join(' ')}>
-                    <Form action="#" type={FormType.signup} toast={toast}></Form>
+                    <HomeForm action="#" type={FormType.signup} toast={toast}></HomeForm>
                 </div>
                 <div className={[styles.form_container, styles.sign_in_container].join(' ')}>
-                    <Form action="#" type={FormType.login} toast={toast}></Form>
+                    <HomeForm action="#" type={FormType.login} toast={toast}></HomeForm>
                 </div>
                 <div className={styles.overlay_container}>
                     <div className={styles.overlay}>

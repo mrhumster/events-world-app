@@ -22,6 +22,7 @@ export function MapEvents(props:MapEventsProps) {
 
         setMarkerList((prev:MarkerIFace[] | undefined) => {
             if (prev) {return [...prev, item]}
+            return [item]
         })
     })
 

@@ -13,13 +13,10 @@ export const MarkerList = (props:MarkerListProps) => {
     const Map:L.Map = useMap()
 
     const icon:L.Icon<L.IconOptions> = L.icon({
-        iconUrl: require('../../images/pin.png'),
-        iconSize: [26, 36],
-        iconAnchor: [13, 36],
-        popupAnchor: [0, -36],
-        shadowUrl: require('../../images/pin_shadow.png'),
-        shadowSize:   [46, 36],
-        shadowAnchor: [12, 36]
+        iconUrl: require('../../images/pin_red.png'),
+        iconSize: [40, 40],
+        iconAnchor: [10, 32],
+        popupAnchor: [0, -20],
     })
 
     useEffect(() => {
@@ -38,7 +35,7 @@ export const MarkerList = (props:MarkerListProps) => {
         <>
             {objects && objects.map((marker: any, index: number) => (
                 <Marker key={index} position={marker.latlng} icon={icon}>
-                    <Popup className={styles.node_popup} >
+                    <Popup className={styles.node_popup}>
                         <Statistic object={marker}/>
                     </Popup>
                 </Marker>

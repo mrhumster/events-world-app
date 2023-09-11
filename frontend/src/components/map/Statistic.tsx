@@ -188,7 +188,7 @@ export const Statistic = (props:StatisticProps) => {
     if (fetching) {
         return (
             <div className={styles.fetch_data}>
-                <Spinner animation="border" role="status">
+                <Spinner animation="grow" variant="primary" role="status">
                     <span className="visually-hidden">Loading...</span>
                 </Spinner>
             </div>

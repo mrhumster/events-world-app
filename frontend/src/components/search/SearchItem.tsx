@@ -28,7 +28,6 @@ function Position(props:PositionProps) {
 
 export const SearchItem = (props:SearchItemProps) => {
     const {item, setShowSearch, setMarkerList} = props
-    console.log(item)
     const handleClickResult = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
 
         item['latlng'] = {

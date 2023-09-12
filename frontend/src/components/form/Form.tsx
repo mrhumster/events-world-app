@@ -29,6 +29,18 @@ export const HomeForm = (props: FormProps) => {
 
     const userActions = useUserActions();
 
+    const handleError = (err:any) => {
+        if (err.response.status === 401) {
+            toast.setToastMessage(err.response.data.detail)
+        } else if (err.response.status === 502) {
+            toast.setToastMessage('Похоже произошла ошибка. Свяжитесь с администратором')
+        }
+        toast.setToastTitle('Ошибка')
+        toast.setToastType('danger')
+        toast.setShowToast(true)
+        return false
+    }
+
     const handleSubmit = (event:  React.FormEvent) => {
         event.preventDefault()
         if (type === FormType.login) {
@@ -40,12 +52,7 @@ export const HomeForm = (props: FormProps) => {
                 };
                 userActions.login(data).catch((err) => {
                     if (err.message) {
-                        if (err.response.status === 401) {
-                            toast.setToastTitle('Ошибка')
-                            toast.setToastMessage(err.response.data.detail)
-                            toast.setToastType('danger')
-                            toast.setShowToast(true)
-                        }
+                        handleError(err)
                     }
                 });
 
@@ -60,11 +67,7 @@ export const HomeForm = (props: FormProps) => {
                 };
                 userActions.register(data).catch((err) => {
                     if (err.message) {
-                        console.error(err)
-                        toast.setToastTitle('Ошибка')
-                        toast.setToastMessage(err.response.data.detail.error)
-                        toast.setToastType('danger')
-                        toast.setShowToast(true)
+                        handleError(err)
                     }
                 });
             }

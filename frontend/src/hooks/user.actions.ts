@@ -23,7 +23,7 @@ interface UserDataIFace {
 
 export function useUserActions() {
     const navigate = useNavigate();
-    const baseURL = "https://base/api";
+    const baseURL = `https://${process.env.HOSTNAME}/api`;
 
     // Login user
     function login(data: LoginDataIFace) {

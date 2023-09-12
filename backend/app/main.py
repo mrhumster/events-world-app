@@ -1,6 +1,8 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from routes.user import router as UserRouter
+from utils.environment import Config
+
 
 app = FastAPI(title='Event World App',
               description='API build for MongoDB with FastAPI',
@@ -11,7 +13,8 @@ app = FastAPI(title='Event World App',
 origins = [
     "https://base",
     "https://0.0.0.0",
-    "https://localhost"
+    "https://localhost",
+    f"https://{Config.HOSTNAME}"
 ]
 
 app.add_middleware(

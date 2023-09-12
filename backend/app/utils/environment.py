@@ -14,5 +14,5 @@ class Config:
     ALGORITHM = os.environ.get('ALGORITHM', "HS256")
     ACCESS_TOKEN_EXPIRE_MINUTES = int(os.environ.get('ACCESS_TOKEN_EXPIRE_MINUTES', 10_080))  # one week
     MONGO_URI = os.environ.get('ME_CONFIG_MONGODB_URL', '')
-    HOSTNAME = os.environ.get('HOSTNAME', 'localhost')
+    HOSTNAME = os.environ.get('REACT_APP_HOSTNAME', 'localhost')
 

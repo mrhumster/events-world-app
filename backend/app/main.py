@@ -9,7 +9,9 @@ app = FastAPI(title='Event World App',
               redoc_url='/redoc')
 
 origins = [
-    "https://base"
+    "https://base",
+    "https://0.0.0.0",
+    "https://localhost"
 ]
 
 app.add_middleware(

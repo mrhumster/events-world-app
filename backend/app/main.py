@@ -14,7 +14,7 @@ origins = [
     "https://base",
     "https://0.0.0.0",
     "https://localhost",
-    f"https://{Config.HOSTNAME}"
+    f"https://{Config.REACT_APP_HOSTNAME}"
 ]
 
 app.add_middleware(

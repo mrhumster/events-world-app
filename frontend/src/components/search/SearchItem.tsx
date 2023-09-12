@@ -1,7 +1,7 @@
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faLocationDot} from "@fortawesome/free-solid-svg-icons";
 import {Button, Container, ListGroup} from "react-bootstrap";
-import Row from "react-bootstrap/Row";
+import {Row} from "react-bootstrap";
 import styles from "./styles.module.css";
 import React from "react";
 import {MarkerIFace} from "../map";

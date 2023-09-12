@@ -20,8 +20,8 @@ services:
     build: ./frontend
     volumes:
       - ./frontend:/frontend
-    environment:
-      - WDS_SOCKET_PORT=0
+    env_file:
+      - .env
     networks:
       - event-world-network
     command: sh -c "npm install && npm start"

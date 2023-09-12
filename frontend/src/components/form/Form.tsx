@@ -45,7 +45,6 @@ export const HomeForm = (props: FormProps) => {
         event.preventDefault()
         if (type === FormType.login) {
             if (!username.error && !password.error) {
-                console.log('Форма без ошибок')
                 const data = {
                     username: username.value,
                     password: password.value,
@@ -59,7 +58,6 @@ export const HomeForm = (props: FormProps) => {
             }
         } else if (type === FormType.signup) {
             if (!email.error && !password.error && !password2.error && !username.error) {
-                console.log('Форма без ошибок')
                 const data = {
                     username: username.value,
                     password: password.value,

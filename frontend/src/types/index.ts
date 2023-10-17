@@ -1,0 +1,1 @@
+export type {ResponseIFace, FeatureMemberItemIFace} from './ResponseType'

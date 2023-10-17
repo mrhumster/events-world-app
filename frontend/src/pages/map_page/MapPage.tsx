@@ -1,8 +1,9 @@
 import React, {useState} from "react";
-import {FeatureMemberItemIFace, Navigationbar, SearchResult} from "../../components";
+import {Navigationbar, SearchResult} from "../../components";
 import { Map } from "../../components";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {MarkerIFace} from "../../components/map";
+import { FeatureMemberItemIFace } from "../../types";
 
 
 export const MapPage = () => {

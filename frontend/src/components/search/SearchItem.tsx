@@ -5,7 +5,7 @@ import {Row} from "react-bootstrap";
 import styles from "./styles.module.css";
 import React from "react";
 import {MarkerIFace} from "../map";
-import {FeatureMemberItemIFace} from "./SearchResult";
+import {FeatureMemberItemIFace} from "../../types";
 
 interface PositionProps {
     position: string
@@ -28,20 +28,19 @@ function Position(props:PositionProps) {
 
 export const SearchItem = (props:SearchItemProps) => {
     const {item, setShowSearch, setMarkerList} = props
+    const latlng  = {
+        'lng': parseFloat(item.GeoObject.Point.pos.split(' ')[0]),
+        'lat': parseFloat(item.GeoObject.Point.pos.split(' ')[1]),
+    }
+    const geoObject = {...item, latlng}
+
     const handleClickResult = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-
-        item['latlng'] = {
-            'lng': parseFloat(item.GeoObject.Point.pos.split(' ')[0]),
-            'lat': parseFloat(item.GeoObject.Point.pos.split(' ')[1]),
-        }
-
         setShowSearch(false)
-
-        setMarkerList((prev:MarkerIFace[] | undefined) => {
+        setMarkerList((prev: MarkerIFace[] | undefined) => {
             if (prev) {
-                return [...prev, item]
+                return [...prev, geoObject]
             }
-            return [item]
+            return [geoObject]
         })
     }
     return (

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect} from "react";
 import {ChartData} from "chart.js";
 import {Bar} from "react-chartjs-2";
 import styles from "./styles.module.css";
@@ -14,10 +14,11 @@ import {
     PointElement,
     LineElement
 } from "chart.js";
+
 import {Spinner, Tab, Table, Tabs} from "react-bootstrap";
-import L, {LatLngLiteral} from "leaflet";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
+import {useGetStatisticQuery} from "../../services/airQuality";
 
 ChartJS.register(
     CategoryScale,
@@ -29,6 +30,7 @@ ChartJS.register(
     PointElement,
     LineElement
 );
+
 interface StatisticProps {
     object: any
 }
@@ -63,10 +65,14 @@ function TableData(props: { data:any }) {
 }
 
 export const Statistic = (props:StatisticProps) => {
-    const {object} = props
-    const [data, setData] = useState<any>()
-    const [fetching, setFetch] = useState<boolean>(true)
-    let coordinates = object.latlng
+    let coordinates = props.object.latlng
+    const { data, error, isLoading } = useGetStatisticQuery(coordinates)
+
+    useEffect(()=>{
+        if (error) {
+            console.log('Query error: ',error)
+        }
+    }, [error])
 
     const getLineData = (initialData:any, lengthOfDataChunks:any) => {
         const numOfChunks = Math.ceil(initialData.length / lengthOfDataChunks);
@@ -88,28 +94,6 @@ export const Statistic = (props:StatisticProps) => {
 
         return averagedChunks.flat();
     }
-
-    function fetchData(coordinates:L.LatLngLiteral){
-        setFetch(true)
-        const API_OPEN_METEO = `https://air-quality-api.open-meteo.com/v1/air-quality?latitude=${coordinates.lat}&longitude=${coordinates.lng}&hourly=pm10,pm2_5`
-
-        fetch(API_OPEN_METEO)
-            .then((response) => {
-                if (!response.ok) {
-                    console.log(response)
-                }
-                return response.json()})
-            .then((data) => {
-                setData(data)
-            })
-
-    }
-
-    useEffect(() => fetchData(coordinates), [coordinates])
-
-    useEffect(() => {
-        setTimeout(()=>setFetch(false), 2000)
-    }, [data])
 
     let bar, table;
 
@@ -185,7 +169,7 @@ export const Statistic = (props:StatisticProps) => {
         table = <TableData data={data}></TableData>
     }
 
-    if (fetching) {
+    if (isLoading) {
         return (
             <div className={styles.fetch_data}>
                 <Spinner animation="grow" variant="primary" role="status">
@@ -211,7 +195,6 @@ export const Statistic = (props:StatisticProps) => {
                     </div>
                 </Tab>
             </Tabs>
-
         </div>
     )
 }

@@ -5,7 +5,6 @@ import styles from './styles.module.css'
 import 'leaflet/dist/leaflet.css';
 import { MarkerList } from './MarkerList';
 import {MapEvents} from './MapEvents'
-import L from "leaflet";
 
 const defaultPosition = {
   lat: 55.75,
@@ -21,7 +20,10 @@ interface MapProps {
 }
 
 export interface MarkerIFace {
-    latlng?: L.LatLngExpression
+    latlng: {
+        lat: number,
+        lng: number
+    }
 }
 
 export const Map = (props:MapProps) => {

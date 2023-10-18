@@ -21,7 +21,7 @@ export const MapPage = () => {
         <>
             <Navigationbar setShowSearch={setShowSearch}/>
             <Map setShowSearch={setShowSearch} markerList={markerList} setMarkerList={setMarkerList}/>
-            {showSearch && <SearchResult featureMember={featureMember} setFeatureMember={setFeatureMember} setShowSearch={setShowSearch} setMarkerList={setMarkerList} />}
+            {showSearch && <SearchResult featureMember={featureMember} setFeatureMember={setFeatureMember} showSearch={showSearch} setShowSearch={setShowSearch} setMarkerList={setMarkerList} />}
         </>
     )
 }

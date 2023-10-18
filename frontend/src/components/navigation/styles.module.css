@@ -26,3 +26,7 @@ li a {
 li a:hover {
     background-color: #111;
 }
+
+.active_navlink {
+    text-decoration: underline;
+}

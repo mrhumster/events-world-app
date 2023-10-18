@@ -8,6 +8,7 @@ import {SearchInput} from '../search/'
 import {faCloud} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCircleUser} from "@fortawesome/free-regular-svg-icons";
+import styles from "./styles.module.css";
 
 interface NavigationbarProps {
     setShowSearch?:React.Dispatch<React.SetStateAction<boolean>>
@@ -35,9 +36,9 @@ export function Navigationbar(props:NavigationbarProps) {
 
     return (
         <Navbar bg="white" variant="pills" className="shadow-lg">
-            <Container>
+            <Container className="d-flex">
                 <Navbar.Brand href="/">
-                    <FontAwesomeIcon icon={faCloud} style={{color: "#174492",}} />{' '}
+                    <FontAwesomeIcon icon={faCloud} style={{color: "var(--bs-blue)",}} />{' '}
                     <span className="navbar-brand fw-light text-primary ms-2 text-uppercase" id="logo">Чистый воздух</span>
                 </Navbar.Brand>
                 <Nav>
@@ -49,14 +50,13 @@ export function Navigationbar(props:NavigationbarProps) {
                     <Nav>
                         <NavDropdown className="me-5" menuVariant="light"
                             title={
-                            <Button size="sm" variant="link" className="text-uppercase link-offset-3">
+                            <Button size="sm" variant="link" className="text-uppercase link-dark text-decoration-none link-offset-3">
                                 <FontAwesomeIcon icon={faCircleUser} size='xl' />{' '}{user.username}
                             </Button>}>
-
                                 <Container>
                                     <Card className="text-center">
                                         <Card.Body>
-                                            <div><FontAwesomeIcon icon={faCircleUser} bounce size='2xl' /></div>
+                                            <div><FontAwesomeIcon icon={faCircleUser} size='2xl' style={{color: "#404040"}}/></div>
                                             <Nav.Link className="inline" href={'mailto:'+user.email}>{user.email}</Nav.Link>
                                         </Card.Body>
                                     </Card>

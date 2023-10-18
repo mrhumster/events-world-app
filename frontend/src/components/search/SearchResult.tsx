@@ -1,7 +1,7 @@
 import styles from "./styles.module.css";
 import {Card, Form, InputGroup, ListGroup} from "react-bootstrap";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faMagnifyingGlass, faSpinner} from "@fortawesome/free-solid-svg-icons";
+import {faMagnifyingGlass, faSpinner, faXmark} from "@fortawesome/free-solid-svg-icons";
 import React, {useEffect, useState} from "react";
 import {SearchItem} from "./SearchItem";
 import {MarkerIFace} from "../map";
@@ -9,9 +9,7 @@ import {useGetLatLngQuery} from "../../services/geocode";
 import { useDebounce } from 'usehooks-ts'
 import {FeatureMemberItemIFace} from "../../types";
 import { HistoryList } from "./HistoryList";
-import {useAddHistoryItemMutation} from "../../services/backend";
-import {getUser} from "../../hooks";
-
+import { motion } from "framer-motion"
 
 
 interface SearchResultProps {
@@ -19,16 +17,25 @@ interface SearchResultProps {
     setFeatureMember: React.Dispatch<React.SetStateAction<FeatureMemberItemIFace[] | undefined>>,
     setShowSearch: React.Dispatch<React.SetStateAction<boolean>>,
     setMarkerList: React.Dispatch<React.SetStateAction<MarkerIFace[] | undefined>>
+    showSearch: boolean
 }
 
 export const SearchResult = (props:SearchResultProps) => {
-    const {featureMember, setFeatureMember, setShowSearch, setMarkerList} = props
+    const {
+        featureMember,
+        setFeatureMember,
+        setShowSearch,
+        setMarkerList,
+        showSearch
+    } = props
     const [search, setSearch] = useState<string>('')
     const debouncedSearch = useDebounce<string>(search, 400)
+
     const handleChange = (e: any): void => {
         setSearch(e.currentTarget.value)
     }
-    const { data, error, isLoading } = useGetLatLngQuery(debouncedSearch, { skip: debouncedSearch === ''})
+    const {data, error, isLoading} = useGetLatLngQuery(debouncedSearch, {skip: debouncedSearch === ''})
+
 
     useEffect(() => {
         if (search.length === 0) {
@@ -36,28 +43,37 @@ export const SearchResult = (props:SearchResultProps) => {
         }
     }, [search, setFeatureMember])
 
-    useEffect(()=> {
+    useEffect(() => {
         if (data) {
             const fm: any = data['response']['GeoObjectCollection']
             setFeatureMember(fm.featureMember)
         }
     }, [data, setFeatureMember])
 
-    useEffect(()=>{
+    useEffect(() => {
         if (error) {
-            console.log('Query error: ',error)
+            console.log('Query error: ', error)
         }
     }, [error])
 
+    const handlerDeleteQuery = () => {
+        setSearch('')
+    }
+
 
     return (
-        <div className={[styles.search_result, 'shadow-lg'].join(' ')}>
+        <motion.div
+            initial={{ opacity: 0, scale: 0.1, y: -200, x: -150 }}
+            animate={{ opacity: 1, scale: 1, y: 0, x: 0 }}
+            transition={{ duration: 0.9 }}
+            className={[styles.search_result, 'shadow-lg'].join(' ')}>
             <Card>
                 <Card.Header>
                     <InputGroup>
                         <InputGroup.Text id="btnGroupAddon">
-                            {isLoading? <FontAwesomeIcon icon={faSpinner} spinPulse />:<FontAwesomeIcon icon={faMagnifyingGlass}/>}
-                            </InputGroup.Text>
+                            {isLoading ? <FontAwesomeIcon icon={faSpinner} spinPulse/> :
+                                <FontAwesomeIcon icon={faMagnifyingGlass}/>}
+                        </InputGroup.Text>
                         <Form.Control
                             autoFocus
                             type="text"
@@ -67,10 +83,12 @@ export const SearchResult = (props:SearchResultProps) => {
                             onChange={handleChange}
                             value={search}
                         />
+                        <button className={styles.innerBtn} onClick={handlerDeleteQuery}><FontAwesomeIcon
+                            icon={faXmark}/></button>
                     </InputGroup>
                 </Card.Header>
                 <Card.Body className={styles.search_body}>
-                    {!featureMember && <HistoryList setSearch={setSearch} />}
+                    {!featureMember && <HistoryList setSearch={setSearch}/>}
 
                     <ListGroup id="list_group" variant='flush'>
                         {featureMember && featureMember.map(
@@ -87,6 +105,6 @@ export const SearchResult = (props:SearchResultProps) => {
                     </ListGroup>
                 </Card.Body>
             </Card>
-        </div>
+        </motion.div>
     )
 }

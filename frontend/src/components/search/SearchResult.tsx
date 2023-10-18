@@ -17,7 +17,6 @@ interface SearchResultProps {
     setFeatureMember: React.Dispatch<React.SetStateAction<FeatureMemberItemIFace[] | undefined>>,
     setShowSearch: React.Dispatch<React.SetStateAction<boolean>>,
     setMarkerList: React.Dispatch<React.SetStateAction<MarkerIFace[] | undefined>>
-    showSearch: boolean
 }
 
 export const SearchResult = (props:SearchResultProps) => {
@@ -26,7 +25,6 @@ export const SearchResult = (props:SearchResultProps) => {
         setFeatureMember,
         setShowSearch,
         setMarkerList,
-        showSearch
     } = props
     const [search, setSearch] = useState<string>('')
     const debouncedSearch = useDebounce<string>(search, 400)
@@ -65,7 +63,7 @@ export const SearchResult = (props:SearchResultProps) => {
         <motion.div
             initial={{ opacity: 0, scale: 0.1, y: -200, x: -150 }}
             animate={{ opacity: 1, scale: 1, y: 0, x: 0 }}
-            transition={{ duration: 0.9 }}
+            transition={{ duration: 0.2 }}
             className={[styles.search_result, 'shadow-lg'].join(' ')}>
             <Card>
                 <Card.Header>

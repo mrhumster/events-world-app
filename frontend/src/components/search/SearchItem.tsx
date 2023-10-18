@@ -6,6 +6,8 @@ import styles from "./styles.module.css";
 import React from "react";
 import {MarkerIFace} from "../map";
 import {FeatureMemberItemIFace} from "../../types";
+import {useAddHistoryItemMutation, useGetHistoryByNameQuery} from "../../services/backend";
+import {getUser} from "../../hooks";
 
 interface PositionProps {
     position: string
@@ -15,6 +17,7 @@ interface SearchItemProps {
     item:FeatureMemberItemIFace,
     setShowSearch: React.Dispatch<React.SetStateAction<boolean>>,
     setMarkerList:React.Dispatch<React.SetStateAction<MarkerIFace[] | undefined>>
+    query: string
 }
 
 function Position(props:PositionProps) {
@@ -27,12 +30,20 @@ function Position(props:PositionProps) {
 }
 
 export const SearchItem = (props:SearchItemProps) => {
-    const {item, setShowSearch, setMarkerList} = props
+    const {
+        item,
+        setShowSearch,
+        setMarkerList,
+        query
+    } = props
     const latlng  = {
         'lng': parseFloat(item.GeoObject.Point.pos.split(' ')[0]),
         'lat': parseFloat(item.GeoObject.Point.pos.split(' ')[1]),
     }
     const geoObject = {...item, latlng}
+    const user = getUser()
+    const [addHistoryItem] = useAddHistoryItemMutation()
+    const { refetch } = useGetHistoryByNameQuery(user?.username)
 
     const handleClickResult = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         setShowSearch(false)
@@ -42,6 +53,12 @@ export const SearchItem = (props:SearchItemProps) => {
             }
             return [geoObject]
         })
+        addHistoryItem({
+                username: user?.username,
+                query: query,
+                date: new Date()
+            })
+        refetch()
     }
     return (
         <ListGroup.Item className='p-1'>

@@ -28,8 +28,8 @@ body {
     cursor: pointer;
 }
 .search_body {
-    min-height: 150px;
-    max-height: 60vw;
+    min-height: 50px;
+    max-height: 50vw;
     overflow-y: auto;
     overflow-x: hidden;
 }

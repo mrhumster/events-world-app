@@ -1,13 +1,16 @@
 import styles from "./styles.module.css";
 import {Card, Form, InputGroup, ListGroup} from "react-bootstrap";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faMagnifyingGlass} from "@fortawesome/free-solid-svg-icons";
+import {faMagnifyingGlass, faSpinner} from "@fortawesome/free-solid-svg-icons";
 import React, {useEffect, useState} from "react";
 import {SearchItem} from "./SearchItem";
 import {MarkerIFace} from "../map";
 import {useGetLatLngQuery} from "../../services/geocode";
 import { useDebounce } from 'usehooks-ts'
 import {FeatureMemberItemIFace} from "../../types";
+import { HistoryList } from "./HistoryList";
+import {useAddHistoryItemMutation} from "../../services/backend";
+import {getUser} from "../../hooks";
 
 
 
@@ -21,12 +24,17 @@ interface SearchResultProps {
 export const SearchResult = (props:SearchResultProps) => {
     const {featureMember, setFeatureMember, setShowSearch, setMarkerList} = props
     const [search, setSearch] = useState<string>('')
-    const debouncedSearch = useDebounce<string>(search, 100)
+    const debouncedSearch = useDebounce<string>(search, 400)
     const handleChange = (e: any): void => {
         setSearch(e.currentTarget.value)
     }
-
     const { data, error, isLoading } = useGetLatLngQuery(debouncedSearch, { skip: debouncedSearch === ''})
+
+    useEffect(() => {
+        if (search.length === 0) {
+            setFeatureMember(undefined)
+        }
+    }, [search, setFeatureMember])
 
     useEffect(()=> {
         if (data) {
@@ -48,7 +56,7 @@ export const SearchResult = (props:SearchResultProps) => {
                 <Card.Header>
                     <InputGroup>
                         <InputGroup.Text id="btnGroupAddon">
-                            {isLoading? <FontAwesomeIcon icon={faMagnifyingGlass} beat/>:<FontAwesomeIcon icon={faMagnifyingGlass}/>}
+                            {isLoading? <FontAwesomeIcon icon={faSpinner} spinPulse />:<FontAwesomeIcon icon={faMagnifyingGlass}/>}
                             </InputGroup.Text>
                         <Form.Control
                             autoFocus
@@ -57,10 +65,13 @@ export const SearchResult = (props:SearchResultProps) => {
                             aria-label="Search group"
                             aria-describedby="btnGroupAddon"
                             onChange={handleChange}
+                            value={search}
                         />
                     </InputGroup>
                 </Card.Header>
                 <Card.Body className={styles.search_body}>
+                    {!featureMember && <HistoryList setSearch={setSearch} />}
+
                     <ListGroup id="list_group" variant='flush'>
                         {featureMember && featureMember.map(
                             (item: any, index: number) => (
@@ -69,6 +80,7 @@ export const SearchResult = (props:SearchResultProps) => {
                                     item={item}
                                     setShowSearch={setShowSearch}
                                     setMarkerList={setMarkerList}
+                                    query={search}
                                 />
                             )
                         )}

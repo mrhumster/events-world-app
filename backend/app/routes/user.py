@@ -2,16 +2,12 @@ from datetime import datetime, timezone, timedelta
 
 from fastapi import APIRouter, Body, Depends, HTTPException, status
 from fastapi.encoders import jsonable_encoder
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
-from jose import jwt, JWTError
-from passlib.context import CryptContext
-from typing import Optional
+from fastapi.security import OAuth2PasswordRequestForm
 
 from authorisation.auth import authenticate_user, create_access_token, create_password_hash
-from utils.db import add_user, delete_user, retrieve_user, retrieve_users, update_user, get_user
+from utils.db import add_user, retrieve_user, retrieve_users, update_user, get_user
 from utils.environment import Config
-
-from utils.schema import ErrorResponseModel, ResponseModel, UserSchema, UpdateUserModel, TokenData, User, Token, \
+from utils.schema import ErrorResponseModel, ResponseModel, UserSchema, UpdateUserModel, Token, \
     UserRegister
 
 router = APIRouter()
@@ -56,7 +52,6 @@ async def update_student_data(id: str, req: UpdateUserModel = Body(...)):
 @router.post("/token", response_model=Token)
 async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends()):
     user = await authenticate_user(form_data.username, form_data.password)
-    print('*** ***', user)
     if not user:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,

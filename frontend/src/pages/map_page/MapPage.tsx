@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Navigationbar, SearchResult} from "../../components";
 import { Map } from "../../components";
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -10,6 +10,12 @@ export const MapPage = () => {
     const [showSearch, setShowSearch] = useState<boolean>(false)
     const [featureMember, setFeatureMember] = useState<FeatureMemberItemIFace[]>()
     const [markerList, setMarkerList] = useState<MarkerIFace[] | undefined>()
+
+    useEffect(() => {
+        if (!showSearch) {
+            setFeatureMember(undefined)
+        }
+    }, [showSearch])
 
     return (
         <>

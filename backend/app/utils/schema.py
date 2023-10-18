@@ -2,6 +2,15 @@ from typing import Optional, List
 from pydantic import BaseModel, Field, EmailStr
 from datetime import datetime
 
+
+class HistoryBaseSchema(BaseModel):
+    username: str = Field(...)
+    query: str = Field(...)
+
+class HistorySchema(HistoryBaseSchema):
+    date: datetime
+
+
 class UserSchema(BaseModel):
     username: str = Field(...)
     email: EmailStr = Field(...)
@@ -13,6 +22,13 @@ class UpdateUserModel(BaseModel):
 def ResponseModel(data: dict, message: str) -> dict:
     return {
         "data": [data],
+        "code": 200,
+        "message": message
+    }
+
+def ResponseHistoryModel(items: list, message: str) -> dict:
+    return {
+        "items": items,
         "code": 200,
         "message": message
     }

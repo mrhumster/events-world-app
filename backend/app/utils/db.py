@@ -1,13 +1,16 @@
+import collections
+
 import motor.motor_asyncio
 from bson.objectid import ObjectId
+from uvicorn.main import logger
 
 from utils.environment import Config
 
 client = motor.motor_asyncio.AsyncIOMotorClient(Config.MONGO_URI)
 database = client.users
 user_collection = database.get_collection("users_collection")
+history_collection = database.get_collection("history_query")
 
-# helpers
 
 def user_helper(user) -> dict:
     return {
@@ -16,6 +19,19 @@ def user_helper(user) -> dict:
         "email": user["email"],
         "hashed_password": user["hashed_password"]
     }
+
+def history_helper(history) -> dict:
+    return {
+        "id": str(history["_id"]),
+        "username": history["username"],
+        "query": history["query"],
+        "date": history["date"]
+    }
+
+async def add_history_item(history_data: dict) -> dict:
+    history = await history_collection.insert_one(history_data)
+    new_history = await history_collection.find_one({"_id": history.inserted_id})
+    return history_helper(new_history)
 
 async def retrieve_users():
     users = []
@@ -32,6 +48,28 @@ async def retrieve_user(id: str) -> dict:
     user = await user_collection.find_one({"_id": ObjectId(id)})
     if user:
         return user_helper(user)
+
+async def retrieve_user_by_name(username: str) -> dict | bool:
+    user = await user_collection.find_one({"username": username})
+    if user:
+        return user_helper(user)
+    return False
+
+async def retrieve_history_item_by_username(username: str) -> list:
+    history_items = []
+    async for item in history_collection.find({"username": username}).sort("-date"):
+        history_items.append(history_helper(item))
+
+    unique = collections.OrderedDict()
+    for elem in history_items:
+        unique.setdefault(elem["query"], elem)
+    return list(unique.values())[::-1][:5]
+
+
+async def delete_history_by_username_and_query(username: str, query: str) -> bool:
+    result = await history_collection.delete_many({'username': username, 'query': query})
+    return True
+
 
 async def update_user(id: str, data: dict):
     if len(data) < 1:

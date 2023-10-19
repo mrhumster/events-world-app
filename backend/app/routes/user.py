@@ -28,9 +28,9 @@ async def get_users(current_user: User = Depends(get_current_active_user)):
         return ResponseModel(users, 'Пользователи успешно доставлены')
     return ResponseModel(users, 'Пустой список')
 
-@router.get("/{id}", response_description='Пользователь')
-async def get_user_data(user_id: str):
-    user = await retrieve_user(user_id)
+@router.get("/{username}", response_description='Пользователь')
+async def get_user_data(username: str):
+    user = await retrieve_user(username)
     if user:
         return ResponseModel(user, 'Пользователь успешно доставлен')
     raise HTTPException(
@@ -39,13 +39,13 @@ async def get_user_data(user_id: str):
         headers={'WWW-Authenticate': 'Bearer'}
     )
 
-@router.put("/{id}")
-async def update_user_data(user_id: str, req: UpdateUserModel = Body(...), current_user: User = Depends(get_current_active_user)):
+@router.put("/{username}")
+async def update_user_data(username: str, req: UpdateUserModel = Body(...), current_user: User = Depends(get_current_active_user)):
     req = {k: v for k, v in req.dict().items() if v is not None}
-    updated_student = await update_user(user_id, req)
+    updated_student = await update_user(username, req)
     if updated_student:
         return ResponseModel(
-            {"detail": f"User with ID: {user_id} name update is successful"},
+            {"detail": f"User with ID: {username} name update is successful"},
             "User name updated successfully",
         )
     return ErrorResponseModel(
@@ -77,7 +77,8 @@ async def create_user(register_form: UserRegister):
         'hashed_password': create_password_hash(register_form.password),
         'joined': str(datetime.now(timezone.utc)),
         'email': register_form.email,
-        'disabled': False
+        'disabled': False,
+        'theme': 'light'
     }
 
     check_users = await get_user(attributes['username'])
@@ -97,4 +98,9 @@ async def create_user(register_form: UserRegister):
     access_token = create_access_token(
         data={"sub": user['username']}, expires_delta=access_token_expires
     )
-    return {"access": access_token, "refresh": "Sorry, this method not implement", "user": user, "token_type": "bearer"}
+    return {
+        "access": access_token,
+        "refresh": "Sorry, this method not implement",
+        "user": user,
+        "token_type": "bearer"
+    }

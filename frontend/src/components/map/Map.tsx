@@ -59,6 +59,7 @@ export const Map = (props:MapProps) => {
             <TileLayer
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                className='map-tiles'
             />
             <MapEvents setShowSearch={setShowSearch} setMarkerList={setMarkerList}/>
             <MarkerList objects={markerList}/>

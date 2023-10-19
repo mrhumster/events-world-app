@@ -170,6 +170,7 @@ export const HomeForm = (props: FormProps) => {
                            onChange={(e) => handleChangePassword(e)}/>
                     <small className={component.error}>{password.error}</small>
 
+                    {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
                     <a className={component.login_form} href="#">Забыли пароль</a>
                     <button className={styles.loging_form} id="button_login" type="submit">Войти</button>
                 </form>

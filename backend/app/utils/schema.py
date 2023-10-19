@@ -15,9 +15,10 @@ class UserSchema(BaseModel):
     username: str = Field(...)
     email: EmailStr = Field(...)
     disabled: bool = Field(...)
+    theme: str
 
 class UpdateUserModel(BaseModel):
-    fullname: Optional[str]
+    theme: Optional[str]
     email: Optional[EmailStr]
 
 def ResponseModel(data: dict, message: str) -> dict:
@@ -47,6 +48,7 @@ class User(BaseModel):
     last_name: Optional[str] = None
     joined: Optional[datetime] = None
     disabled: Optional[bool] = None
+    theme: Optional[str] = 'light'
 
 class UserInDB(UserSchema):
     hashed_password: str = Field(...)
@@ -67,4 +69,5 @@ class UserRegister(BaseModel):
     password: str
     email: str
     disabled: Optional[bool] = None
+    theme: Optional[str] = 'light'
 

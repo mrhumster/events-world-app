@@ -1,13 +1,12 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {Navbar, Container, NavDropdown, Nav, Button, Card} from "react-bootstrap";
-
-import {useLocation, useNavigate} from "react-router-dom";
-import {getUser} from '../../hooks';
+import {useLocation} from "react-router-dom";
+import {getUser, useUserActions} from '../../hooks';
 import {SearchInput} from '../search/'
-
-import {faCloud} from "@fortawesome/free-solid-svg-icons";
+import {faCloud, faSun} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCircleUser} from "@fortawesome/free-regular-svg-icons";
+import {useGetUserDataQuery, useUpdateUserMutation} from "../../services/backend";
 
 interface NavigationbarProps {
     setShowSearch? :React.Dispatch<React.SetStateAction<boolean>>
@@ -15,48 +14,47 @@ interface NavigationbarProps {
 
 export function Navigationbar(props:NavigationbarProps) {
     const {setShowSearch} = props
-    const navigate = useNavigate();
     const location = useLocation();
     const user = getUser();
+    const userAction = useUserActions()
+    const [updateUser] = useUpdateUserMutation()
+    const {data, refetch} = useGetUserDataQuery({})
+    const current_theme = data?.data[0].theme
+    const handleLogout = () => userAction.logout()
+    const isThisPath = (pathname:string) => location.pathname.match(`^${pathname}$`)
 
-    if (user === null) {
-        return (<></>)
+    const handlerChangeTheme = () => {
+        updateUser({
+            theme: current_theme === 'dark' ? 'light' : 'dark'
+        })
+        refetch()
     }
-
-    const handleLogout = () => {
-        localStorage.removeItem("auth")
-        navigate("/login/")
-    }
-
-    const isThisPath = (pathname:string) => {
-        return location.pathname.match(`^${pathname}$`)
-    }
-
 
     return (
-        <Navbar bg="white" variant="pills" className="shadow-lg">
+        <Navbar variant="pills" bg={current_theme} className="shadow-lg" data-bs-theme={current_theme}>
             <Container className="d-flex">
                 <Navbar.Brand href="/">
                     <FontAwesomeIcon icon={faCloud} style={{color: "var(--bs-blue)",}} />{' '}
                     <span className="navbar-brand fw-light text-primary ms-2 text-uppercase" id="logo">Чистый воздух</span>
                 </Navbar.Brand>
-                <Nav>
+                <Nav fill={true}>
                     {isThisPath('/') ? <Nav.Link active href='/'>Карта</Nav.Link> : <Nav.Link href='/'>Карта</Nav.Link>}
                     {isThisPath('/about') ? <Nav.Link active href='/about'>О сервисе</Nav.Link> : <Nav.Link href='/about'>О сервисе</Nav.Link>}
                 </Nav>
                 { isThisPath('/') && setShowSearch ? <SearchInput setShowSearch={setShowSearch} /> : <></>}
+                <Button variant="link" onClick={handlerChangeTheme}><FontAwesomeIcon icon={faSun} /></Button>
                 <Navbar.Collapse className="justify-content-end">
                     <Nav>
                         <NavDropdown className="me-5" menuVariant="light"
                             title={
-                            <Button size="sm" variant="link" className="text-uppercase link-dark text-decoration-none link-offset-3">
-                                <FontAwesomeIcon icon={faCircleUser} size='xl' />{' '}{user.username}
+                            <Button size="sm" variant="link" className="text-uppercase text-decoration-none link-offset-3">
+                                <FontAwesomeIcon icon={faCircleUser} size='xl' />{' '}{user?.username}
                             </Button>}>
                                 <Container>
                                     <Card className="text-center">
                                         <Card.Body>
                                             <div><FontAwesomeIcon icon={faCircleUser} size='2xl' style={{color: "#404040"}}/></div>
-                                            <Nav.Link className="inline" href={'mailto:'+user.email}>{user.email}</Nav.Link>
+                                            <Nav.Link className="inline" href={'mailto:'+user?.email}>{user?.email}</Nav.Link>
                                         </Card.Body>
                                     </Card>
                                 </Container>

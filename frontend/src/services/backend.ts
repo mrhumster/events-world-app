@@ -1,5 +1,5 @@
 import {BaseQueryFn, createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
-import {getAccessToken} from "../hooks";
+import {getAccessToken, getUser} from "../hooks";
 import {showToast} from "./toastSlice";
 import {isErrorWithDetail} from "./helpers";
 
@@ -44,6 +44,18 @@ export const backendApi = createApi({
                 method: 'POST',
                 body: params,
             })
+        }),
+        updateUser: builder.mutation({
+            query: (params) => ({
+                url: `/users/${getUser()?.username}`,
+                method: 'PUT',
+                body: params
+            })
+        }),
+        getUserData: builder.query({
+            query: () => ({
+                url: `/users/${getUser()?.username}`
+            })
         })
     })
 })
@@ -51,5 +63,7 @@ export const backendApi = createApi({
 export const {
     useGetHistoryByNameQuery,
     useAddHistoryItemMutation,
-    useDeleteHistoryMutation
+    useDeleteHistoryMutation,
+    useUpdateUserMutation,
+    useGetUserDataQuery
 } = backendApi

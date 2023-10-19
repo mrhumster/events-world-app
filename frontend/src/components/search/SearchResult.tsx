@@ -11,6 +11,7 @@ import {FeatureMemberItemIFace} from "../../types";
 import { HistoryList } from "./HistoryList";
 import { motion } from "framer-motion"
 import {GeoObjectCollectionIFace} from "../../types/ResponseType";
+import {useGetUserDataQuery} from "../../services/backend";
 
 
 interface SearchResultProps {
@@ -27,6 +28,7 @@ export const SearchResult = (props:SearchResultProps) => {
         setShowSearch,
         setMarkerList,
     } = props
+    const UserData = useGetUserDataQuery({})
     const [search, setSearch] = useState<string>('')
     const debouncedSearch = useDebounce<string>(search, 400)
 
@@ -34,7 +36,7 @@ export const SearchResult = (props:SearchResultProps) => {
         setSearch(e.currentTarget.value)
     }
     const {data, isLoading} = useGetLatLngQuery(debouncedSearch, {skip: debouncedSearch === ''})
-
+    const current_theme = UserData.data.data[0].theme
 
     useEffect(() => {
         if (search.length === 0) {
@@ -60,7 +62,7 @@ export const SearchResult = (props:SearchResultProps) => {
             animate={{ opacity: 1, scale: 1, y: 0, x: 0 }}
             transition={{ duration: 0.2 }}
             className={[styles.search_result, 'shadow-lg'].join(' ')}>
-            <Card>
+            <Card data-bs-theme={current_theme}>
                 <Card.Header>
                     <InputGroup>
                         <InputGroup.Text id="btnGroupAddon">

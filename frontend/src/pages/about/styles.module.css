@@ -1,3 +1,10 @@
-div#root {
+main {
+    height: 100vh;
+}
 
+.light {
+    background-color: #ffffff;
+}
+.dark {
+    background-color: rgb(30, 31, 34);
 }

@@ -18,7 +18,8 @@ def user_helper(user) -> dict:
         "username": user["username"],
         "email": user["email"],
         "hashed_password": user["hashed_password"],
-        "disabled": user["disabled"]
+        "disabled": user["disabled"],
+        "theme": user['theme']
     }
 
 def history_helper(history) -> dict:
@@ -45,8 +46,8 @@ async def add_user(user_data: dict) -> dict:
     new_user = await user_collection.find_one({"_id": user.inserted_id})
     return user_helper(new_user)
 
-async def retrieve_user(user_id: str) -> dict:
-    user = await user_collection.find_one({"_id": ObjectId(user_id)})
+async def retrieve_user(username: str) -> dict:
+    user = await user_collection.find_one({"username": username})
     if user:
         return user_helper(user)
 
@@ -72,13 +73,13 @@ async def delete_history_by_username_and_query(username: str, query: str) -> boo
     return True
 
 
-async def update_user(id: str, data: dict):
+async def update_user(username: str, data: dict):
     if len(data) < 1:
         return False
-    user = await user_collection.find_one({"_id": ObjectId(id)})
+    user = await user_collection.find_one({"username": username})
     if user:
         updated_user = await user_collection.update_one(
-            {"_id": ObjectId(id)}, {"$set": data}
+            {"username": username}, {"$set": data}
         )
         if updated_user:
             return True

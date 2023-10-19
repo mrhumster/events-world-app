@@ -12,7 +12,8 @@ interface SignUpDataIFace extends LoginDataIFace {
 
 interface UserIFace {
     username: string,
-    email: string
+    email: string,
+    theme: string
 }
 
 interface UserDataIFace {

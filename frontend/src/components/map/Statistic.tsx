@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React from "react";
 import {ChartData} from "chart.js";
 import {Bar} from "react-chartjs-2";
 import styles from "./styles.module.css";
@@ -19,6 +19,8 @@ import {Spinner, Tab, Table, Tabs} from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
 import {useGetStatisticQuery} from "../../services/airQuality";
+import {MarkerIFace} from "./Map";
+import {AirQualityResponseIFace} from "../../types/AirQualityResponse";
 
 ChartJS.register(
     CategoryScale,
@@ -32,12 +34,15 @@ ChartJS.register(
 );
 
 interface StatisticProps {
-    object: any
+    object: MarkerIFace
 }
 
-function TableData(props: { data:any }) {
-    const {data} = props
+interface TableDataPropsIFace {
+    data: AirQualityResponseIFace
+}
 
+function TableData(props: TableDataPropsIFace) {
+    const { data} = props
     return (
         <Table striped className="border-start border-bottom">
            <thead>
@@ -66,29 +71,22 @@ function TableData(props: { data:any }) {
 
 export const Statistic = (props:StatisticProps) => {
     let coordinates = props.object.latlng
-    const { data, error, isLoading } = useGetStatisticQuery(coordinates)
+    const { data,isLoading } = useGetStatisticQuery(coordinates)
 
-    useEffect(()=>{
-        if (error) {
-            console.log('Query error: ',error)
-        }
-    }, [error])
-
-    const getLineData = (initialData:any, lengthOfDataChunks:any) => {
+    const getLineData = (initialData:number[], lengthOfDataChunks:number) => {
         const numOfChunks = Math.ceil(initialData.length / lengthOfDataChunks);
-        let dataChunks:any[] = [];
+        let dataChunks:number[][] = [];
 
         for (let i = 0; i < numOfChunks; i++) dataChunks[i] = [];
 
-        initialData.forEach((entry:any, index:any) => {
+        initialData.forEach((entry:number, index:number) => {
             const chunkNumber = Math.floor(index / lengthOfDataChunks);
             dataChunks[chunkNumber].push(entry);
         });
 
         const averagedChunks = dataChunks.map(chunkEntry => {
-            const sumArray = (accumulator:any, currentValue:any) => accumulator + currentValue;
+            const sumArray = (accumulator:number, currentValue:number) => accumulator + currentValue;
             const chunkAverage = chunkEntry.reduce(sumArray) / lengthOfDataChunks;
-            // @ts-ignore
             return chunkEntry.map(chunkEntryValue => chunkAverage);
         });
 
@@ -163,6 +161,7 @@ export const Statistic = (props:StatisticProps) => {
                 },
             ]
         }
+
 
         // @ts-ignore
         bar = <Bar options={options} data={chart_data} />;

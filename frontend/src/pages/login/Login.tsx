@@ -12,17 +12,6 @@ export interface ToasterIFace {
 
 export const Login = () => {
     const [rightPanelActive, setRightPanelActive] = useState(false)
-    const [showToast, setShowToast] = useState(false);
-    const [toastMessage, setToastMessage] = useState("");
-    const [toastType, setToastType] = useState("");
-    const [toastTitle, setToastTitle] = useState("");
-
-    const toast: ToasterIFace = {
-        setToastTitle: setToastTitle,
-        setToastMessage: setToastMessage,
-        setToastType: setToastType,
-        setShowToast: setShowToast
-    }
 
     const setClassRightPanelActive = () => {
         if (rightPanelActive) {
@@ -36,10 +25,10 @@ export const Login = () => {
         <div className={styles.login_page}>
             <div className={[styles.container, setClassRightPanelActive()].join(' ')} id="container">
                 <div className={[styles.form_container, styles.sign_up_container].join(' ')}>
-                    <HomeForm action="#" type={FormType.signup} toast={toast}></HomeForm>
+                    <HomeForm action="#" type={FormType.signup}></HomeForm>
                 </div>
                 <div className={[styles.form_container, styles.sign_in_container].join(' ')}>
-                    <HomeForm action="#" type={FormType.login} toast={toast}></HomeForm>
+                    <HomeForm action="#" type={FormType.login}></HomeForm>
                 </div>
                 <div className={styles.overlay_container}>
                     <div className={styles.overlay}>

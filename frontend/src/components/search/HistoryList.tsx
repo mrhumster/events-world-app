@@ -2,14 +2,20 @@ import { ListGroup } from "react-bootstrap"
 import { getUser } from "../../hooks";
 import {useGetHistoryByNameQuery} from "../../services/backend";
 import {HistoryItem} from "./HistoryItem";
+import React from "react";
+import {HistoryIFace} from "../../types/HistoryType";
 
-export const HistoryList = (props: any) => {
+interface HistoryListPropsIFace {
+    setSearch: React.Dispatch<React.SetStateAction<string>>
+}
+
+export const HistoryList = (props: HistoryListPropsIFace) => {
     const { setSearch } = props
     const user = getUser()
-    const { data, refetch } = useGetHistoryByNameQuery(user?.username)
+    const { data } = useGetHistoryByNameQuery(user?.username)
     return (
         <ListGroup id="list_group" variant='flush'>
-            {data && data.items.map((item: any, index: number) => (
+            {data && data.items.map((item: HistoryIFace, index: number) => (
                 <HistoryItem key={index} item={ item } setSearch={ setSearch }/>
             ))}
         </ListGroup>

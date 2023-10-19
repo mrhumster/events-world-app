@@ -45,8 +45,8 @@ async def add_user(user_data: dict) -> dict:
     new_user = await user_collection.find_one({"_id": user.inserted_id})
     return user_helper(new_user)
 
-async def retrieve_user(id: str) -> dict:
-    user = await user_collection.find_one({"_id": ObjectId(id)})
+async def retrieve_user(user_id: str) -> dict:
+    user = await user_collection.find_one({"_id": ObjectId(user_id)})
     if user:
         return user_helper(user)
 

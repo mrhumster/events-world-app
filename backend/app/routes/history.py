@@ -1,19 +1,16 @@
-import logging
-
 from fastapi import APIRouter, Body, HTTPException, status, Depends
 from fastapi.encoders import jsonable_encoder
-from uvicorn.server import logger
 
 from authorisation.auth import get_current_active_user
-from utils.db import add_history_item, retrieve_user, retrieve_user_by_name, retrieve_history_item_by_username, \
+from utils.db import add_history_item, retrieve_user_by_name, retrieve_history_item_by_username, \
     delete_history_by_username_and_query
-from utils.schema import HistorySchema, ResponseModel, ErrorResponseModel, ResponseHistoryModel, HistoryBaseSchema, User
+from utils.schema import HistorySchema, ResponseModel, ResponseHistoryModel, HistoryBaseSchema, User
 
 router = APIRouter()
 
 
 @router.post("/", response_description="История обновлена")
-async def add_history_data(history_item: HistorySchema = Body(...)):
+async def add_history_data(history_item: HistorySchema = Body(...), current_user: User = Depends(get_current_active_user)):
     history_item = jsonable_encoder(history_item)
     user = await retrieve_user_by_name(history_item['username'])
     if not user:
@@ -25,7 +22,7 @@ async def add_history_data(history_item: HistorySchema = Body(...)):
     return ResponseModel(new_history_item, 'ok')
 
 @router.get("/{username}")
-async def get_history_by_username(username: str):
+async def get_history_by_username(username: str, current_user: User = Depends(get_current_active_user)):
     user = await retrieve_user_by_name(username)
     if not user:
         raise HTTPException(

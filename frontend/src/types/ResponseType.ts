@@ -2,19 +2,21 @@ import L from "leaflet";
 
 export interface ResponseIFace {
     response: {
-        GeoObjectCollection: {
-            futureMember: FeatureMemberItemIFace[],
-            metaDataProperty?: {
-                GeocoderResponseMetaData?: {
-                    found?: string,
-                    request?: string,
-                    results?: string,
-                    boundedBy?: {
-                        Envelope?: {
-                            lowerCorner?: string,
-                            upperCorner?: string
-                        }
-                    }
+        GeoObjectCollection: GeoObjectCollectionIFace
+    }
+}
+
+export interface GeoObjectCollectionIFace {
+    featureMember: FeatureMemberItemIFace[],
+    metaDataProperty?: {
+        GeocoderResponseMetaData?: {
+            found?: string,
+            request?: string,
+            results?: string,
+            boundedBy?: {
+                Envelope?: {
+                    lowerCorner?: string,
+                    upperCorner?: string
                 }
             }
         }
@@ -65,4 +67,13 @@ export interface FeatureMemberItemIFace {
         description?: string | undefined
     },
     latlng: L.LatLngLiteral
+}
+
+export interface ResponseError {
+    response: {
+        status: number,
+        data: {
+            detail: string
+        }
+    }
 }

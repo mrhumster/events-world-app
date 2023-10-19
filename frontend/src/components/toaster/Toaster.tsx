@@ -3,13 +3,6 @@ import { Toast, ToastContainer } from "react-bootstrap";
 import {useDispatch, useSelector} from "react-redux";
 import {closeToast} from "../../services/toastSlice";
 
-interface ToasterProps {
-    showToast: boolean,
-    title: string,
-    message: string,
-    onClose: (e?: React.MouseEvent | React.KeyboardEvent) => void,
-    type: string
-}
 
 export function Toaster() {
     const toast = useSelector((state: any) => state.toast.value)

@@ -10,6 +10,7 @@ import { useDebounce } from 'usehooks-ts'
 import {FeatureMemberItemIFace} from "../../types";
 import { HistoryList } from "./HistoryList";
 import { motion } from "framer-motion"
+import {GeoObjectCollectionIFace} from "../../types/ResponseType";
 
 
 interface SearchResultProps {
@@ -29,10 +30,10 @@ export const SearchResult = (props:SearchResultProps) => {
     const [search, setSearch] = useState<string>('')
     const debouncedSearch = useDebounce<string>(search, 400)
 
-    const handleChange = (e: any): void => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
         setSearch(e.currentTarget.value)
     }
-    const {data, error, isLoading} = useGetLatLngQuery(debouncedSearch, {skip: debouncedSearch === ''})
+    const {data, isLoading} = useGetLatLngQuery(debouncedSearch, {skip: debouncedSearch === ''})
 
 
     useEffect(() => {
@@ -43,16 +44,10 @@ export const SearchResult = (props:SearchResultProps) => {
 
     useEffect(() => {
         if (data) {
-            const fm: any = data['response']['GeoObjectCollection']
+            const fm: GeoObjectCollectionIFace = data.response.GeoObjectCollection
             setFeatureMember(fm.featureMember)
         }
     }, [data, setFeatureMember])
-
-    useEffect(() => {
-        if (error) {
-            console.log('Query error: ', error)
-        }
-    }, [error])
 
     const handlerDeleteQuery = () => {
         setSearch('')
@@ -90,7 +85,7 @@ export const SearchResult = (props:SearchResultProps) => {
 
                     <ListGroup id="list_group" variant='flush'>
                         {featureMember && featureMember.map(
-                            (item: any, index: number) => (
+                            (item: FeatureMemberItemIFace, index: number) => (
                                 <SearchItem
                                     key={index}
                                     item={item}

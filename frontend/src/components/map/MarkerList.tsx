@@ -33,7 +33,7 @@ export const MarkerList = (props:MarkerListProps) => {
 
     return (
         <>
-            {objects && objects.map((marker: any, index: number) => (
+            {objects && objects.map((marker: MarkerIFace, index: number) => (
                 <Marker key={index} position={marker.latlng} icon={icon}>
                     <Popup className={styles.node_popup}>
                         <Statistic object={marker}/>

@@ -6,7 +6,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {useHotkeys} from "react-hotkeys-hook";
 
 interface SearchInputProps {
-    setShowSearch:any
+    setShowSearch: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export const SearchInput = (props:SearchInputProps) => {

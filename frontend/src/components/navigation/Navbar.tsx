@@ -8,10 +8,9 @@ import {SearchInput} from '../search/'
 import {faCloud} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCircleUser} from "@fortawesome/free-regular-svg-icons";
-import styles from "./styles.module.css";
 
 interface NavigationbarProps {
-    setShowSearch?:React.Dispatch<React.SetStateAction<boolean>>
+    setShowSearch? :React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export function Navigationbar(props:NavigationbarProps) {
@@ -45,7 +44,7 @@ export function Navigationbar(props:NavigationbarProps) {
                     {isThisPath('/') ? <Nav.Link active href='/'>Карта</Nav.Link> : <Nav.Link href='/'>Карта</Nav.Link>}
                     {isThisPath('/about') ? <Nav.Link active href='/about'>О сервисе</Nav.Link> : <Nav.Link href='/about'>О сервисе</Nav.Link>}
                 </Nav>
-                { isThisPath('/') ? <SearchInput setShowSearch={setShowSearch} /> : <></>}
+                { isThisPath('/') && setShowSearch ? <SearchInput setShowSearch={setShowSearch} /> : <></>}
                 <Navbar.Collapse className="justify-content-end">
                     <Nav>
                         <NavDropdown className="me-5" menuVariant="light"

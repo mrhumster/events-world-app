@@ -4,11 +4,13 @@ from fastapi import APIRouter, Body, Depends, HTTPException, status
 from fastapi.encoders import jsonable_encoder
 from fastapi.security import OAuth2PasswordRequestForm
 
-from authorisation.auth import authenticate_user, create_access_token, create_password_hash
+from authorisation.auth import authenticate_user, create_access_token, create_password_hash, get_current_active_user
 from utils.db import add_user, retrieve_user, retrieve_users, update_user, get_user
 from utils.environment import Config
 from utils.schema import ErrorResponseModel, ResponseModel, UserSchema, UpdateUserModel, Token, \
     UserRegister
+
+from utils.schema import User
 
 router = APIRouter()
 
@@ -20,26 +22,30 @@ async def add_user_data(user: UserSchema = Body(...)):
     return ResponseModel(new_user, "Пользователь добавлен")
 
 @router.get("/", response_description="Пользователи")
-async def get_users():
+async def get_users(current_user: User = Depends(get_current_active_user)):
     users = await retrieve_users()
     if users:
         return ResponseModel(users, 'Пользователи успешно доставлены')
     return ResponseModel(users, 'Пустой список')
 
 @router.get("/{id}", response_description='Пользователь')
-async def get_user_data(id):
-    user = await retrieve_user(id)
+async def get_user_data(user_id: str):
+    user = await retrieve_user(user_id)
     if user:
         return ResponseModel(user, 'Пользователь успешно доставлен')
-    return ErrorResponseModel('Ошибка', 404, 'Пользователь не существует')
+    raise HTTPException(
+        status_code=status.HTTP_400_BAD_REQUEST,
+        detail='Пользователь не найден',
+        headers={'WWW-Authenticate': 'Bearer'}
+    )
 
 @router.put("/{id}")
-async def update_student_data(id: str, req: UpdateUserModel = Body(...)):
+async def update_user_data(user_id: str, req: UpdateUserModel = Body(...), current_user: User = Depends(get_current_active_user)):
     req = {k: v for k, v in req.dict().items() if v is not None}
-    updated_student = await update_user(id, req)
+    updated_student = await update_user(user_id, req)
     if updated_student:
         return ResponseModel(
-            {"detail": f"User with ID: {id} name update is successful"},
+            {"detail": f"User with ID: {user_id} name update is successful"},
             "User name updated successfully",
         )
     return ErrorResponseModel(
@@ -85,10 +91,8 @@ async def create_user(register_form: UserRegister):
             headers={'WWW-Authenticate': 'Bearer'}
         )
 
-    user_data = await add_user(attributes)
-
+    await add_user(attributes)
     user = await authenticate_user(register_form.username, register_form.password)
-
     access_token_expires = timedelta(minutes=Config.ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
         data={"sub": user['username']}, expires_delta=access_token_expires

@@ -3,7 +3,9 @@ import styles from '../../pages/login/styles.module.css'
 import component from './styles.module.css'
 import {SocialContainer} from "../social";
 import { useUserActions } from "../../hooks"
-import {ToasterIFace} from "../../pages/login";
+import {showToast} from "../../services/toastSlice";
+import {useDispatch} from "react-redux";
+import {ResponseError} from "../../types/ResponseType";
 
 export interface ValidateString {
     value: string;
@@ -17,27 +19,30 @@ export enum FormType {
 interface FormProps {
     action: string,
     type: FormType,
-    toast: ToasterIFace
 }
 
 export const HomeForm = (props: FormProps) => {
-    const {action, type, toast} = props
+    const {action, type} = props
     const [email, setEmail] = useState<ValidateString>({value: '', error: ''})
     const [username, setUsername] = useState<ValidateString>({value: '', error: ''})
     const [password, setPassword] = useState<ValidateString>({value: '', error: ''})
     const [password2, setPassword2] = useState<ValidateString>({value: '', error: ''})
-
+    const dispatch = useDispatch()
     const userActions = useUserActions();
 
-    const handleError = (err:any) => {
+    const handleError = (err: ResponseError) => {
+        let text
         if (err.response.status === 401) {
-            toast.setToastMessage(err.response.data.detail)
+           text = err.response.data.detail
         } else if (err.response.status === 502) {
-            toast.setToastMessage('Похоже произошла ошибка. Свяжитесь с администратором')
+            text = 'Похоже произошла ошибка. Свяжитесь с администратором'
         }
-        toast.setToastTitle('Ошибка')
-        toast.setToastType('danger')
-        toast.setShowToast(true)
+        dispatch(showToast({
+            show: true,
+            title: 'Ошибка',
+            text: text,
+            type: 'danger'
+        }))
         return false
     }
 

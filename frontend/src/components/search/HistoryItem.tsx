@@ -1,13 +1,17 @@
 import {Button, Col, Container, ListGroup, Row} from "react-bootstrap";
-import React, {useEffect} from "react";
+import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {faClockRotateLeft, faXmark} from "@fortawesome/free-solid-svg-icons";
 import {useDeleteHistoryMutation, useGetHistoryByNameQuery} from "../../services/backend";
 import {getUser} from "../../hooks";
-import {useDispatch} from "react-redux";
-import {showToast} from "../../services/toastSlice";
+import {HistoryIFace} from "../../types/HistoryType";
 
-export const HistoryItem = (props: any) => {
+interface HistoryItemPropsIFace {
+    item: HistoryIFace,
+    setSearch: React.Dispatch<React.SetStateAction<string>>
+}
+
+export const HistoryItem = (props: HistoryItemPropsIFace) => {
     const {item, setSearch} = props
     const user = getUser()
     const { refetch } = useGetHistoryByNameQuery(user?.username)

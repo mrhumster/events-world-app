@@ -71,6 +71,7 @@ async def create_user(register_form: UserRegister):
         'hashed_password': create_password_hash(register_form.password),
         'joined': str(datetime.now(timezone.utc)),
         'email': register_form.email,
+        'disabled': False
     }
 
     check_users = await get_user(attributes['username'])

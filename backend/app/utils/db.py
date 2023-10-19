@@ -17,7 +17,8 @@ def user_helper(user) -> dict:
         "id": str(user["_id"]),
         "username": user["username"],
         "email": user["email"],
-        "hashed_password": user["hashed_password"]
+        "hashed_password": user["hashed_password"],
+        "disabled": user["disabled"]
     }
 
 def history_helper(history) -> dict:

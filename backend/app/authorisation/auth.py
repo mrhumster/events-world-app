@@ -5,6 +5,7 @@ from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from jose import jwt, JWTError
 from passlib.context import CryptContext
+from uvicorn.main import logger
 
 from utils.db import get_user
 from utils.environment import Config
@@ -50,12 +51,12 @@ async def get_current_user(token: str = Depends(oauth2_scheme)):
         token_data = TokenData(username=username)
     except JWTError as e:
         raise credentials_exception from e
-    user = get_user(username=token_data.username)
+    user = await get_user(username=token_data.username)
     if user is None:
         raise credentials_exception
     return user
 
 async def get_current_active_user(current_user: UserSchema = Depends(get_current_user)):
-    if current_user.disabled:
+    if current_user['disabled']:
         raise HTTPException(status_code=400, detail="Inactive user")
     return current_user

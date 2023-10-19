@@ -56,13 +56,7 @@ export const Login = () => {
                     </div>
                 </div>
             </div>
-            <Toaster
-                title={toastTitle}
-                message={toastMessage}
-                showToast={showToast}
-                type={toastType}
-                onClose={() => setShowToast(false)}
-            />
+            <Toaster />
         </div>
     )
 }

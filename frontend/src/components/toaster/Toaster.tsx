@@ -1,5 +1,7 @@
 import React from "react";
 import { Toast, ToastContainer } from "react-bootstrap";
+import {useDispatch, useSelector} from "react-redux";
+import {closeToast} from "../../services/toastSlice";
 
 interface ToasterProps {
     showToast: boolean,
@@ -9,17 +11,22 @@ interface ToasterProps {
     type: string
 }
 
-export function Toaster(props:ToasterProps) {
-    const { showToast, title, message, onClose, type } = props;
+export function Toaster() {
+    const toast = useSelector((state: any) => state.toast.value)
+    const dispatch = useDispatch()
+
+    if (!toast) {
+        return null
+    }
 
     return (
         <ToastContainer position="bottom-end">
-            <Toast onClose={onClose} show={showToast} delay={3000} autohide bg={type} className="m-3">
+            <Toast onClose={() => dispatch(closeToast())} show={toast.show} delay={3000} autohide bg={toast.type} className="m-3">
                 <Toast.Header>
-                    <strong className="me-auto">{title}</strong>
+                    <strong className="me-auto">{toast.title}</strong>
                 </Toast.Header>
                 <Toast.Body>
-                    <p className="text-white">{ message }</p>
+                    <p className="text-white">{ toast.text }</p>
                 </Toast.Body>
             </Toast>
         </ToastContainer>

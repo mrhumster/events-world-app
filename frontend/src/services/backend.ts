@@ -1,10 +1,32 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import {BaseQueryFn, createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
+import {getAccessToken} from "../hooks";
+import {showToast} from "./toastSlice";
+import {isErrorWithDetail} from "./helpers";
+
+const baseQuery = fetchBaseQuery({
+        baseUrl: `https://${process.env.REACT_APP_HOSTNAME}/api/`,
+        prepareHeaders: (headers: Headers) => {
+            headers.set("Authorization", `Bearer ${getAccessToken()}`)
+            return headers
+        }
+    }
+)
+
+const baseQueryWithErrorHandler: BaseQueryFn = async (args, api, extraOptions) => {
+    let result = await baseQuery(args, api, extraOptions)
+    if (result.error) {
+        let text
+        if (isErrorWithDetail(result.error.data)) {
+            text = result.error.data.detail
+        }
+        api.dispatch(showToast({show: true, title: 'Error', text: text, type: 'danger'}))
+    }
+    return result
+}
 
 export const backendApi = createApi({
     reducerPath: 'backendApi',
-    baseQuery: fetchBaseQuery({
-        baseUrl: 'https://localhost/api/'
-    }),
+    baseQuery: baseQueryWithErrorHandler,
     endpoints: (builder) => ({
         getHistoryByName: builder.query({
             query: (username) => `/history/${username}`,
@@ -20,7 +42,7 @@ export const backendApi = createApi({
             query: (params) => ({
                 url: '/history/delete',
                 method: 'POST',
-                body: params
+                body: params,
             })
         })
     })

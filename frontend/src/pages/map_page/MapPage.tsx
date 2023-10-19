@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Navigationbar, SearchResult} from "../../components";
+import {Navigationbar, SearchResult, Toaster} from "../../components";
 import { Map } from "../../components";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {MarkerIFace} from "../../components/map";
@@ -22,6 +22,7 @@ export const MapPage = () => {
             <Navigationbar setShowSearch={setShowSearch}/>
             <Map setShowSearch={setShowSearch} markerList={markerList} setMarkerList={setMarkerList}/>
             {showSearch && <SearchResult featureMember={featureMember} setFeatureMember={setFeatureMember} setShowSearch={setShowSearch} setMarkerList={setMarkerList} />}
+            <Toaster />
         </>
     )
 }

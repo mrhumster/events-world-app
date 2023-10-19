@@ -14,6 +14,7 @@ class HistorySchema(HistoryBaseSchema):
 class UserSchema(BaseModel):
     username: str = Field(...)
     email: EmailStr = Field(...)
+    disabled: bool = Field(...)
 
 class UpdateUserModel(BaseModel):
     fullname: Optional[str]
@@ -65,4 +66,5 @@ class UserRegister(BaseModel):
     username: str
     password: str
     email: str
+    disabled: Optional[bool] = None
 

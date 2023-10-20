@@ -20,7 +20,7 @@
   align-items: center;
 }
 .popup_content {
-  width: 850px
+  width: 850px;
 }
 
 .leaflet-popup-content {
@@ -36,8 +36,8 @@
 }
 
 .popup_table::-webkit-scrollbar-track {
-  background: white;        /* color of the tracking area */
-  border-right:1px solid #e7e7e7
+  background: rgb(255, 255, 255);        /* color of the tracking area */
+  border-right: 1px solid #e7e7e7
 }
 
 .popup_table::-webkit-scrollbar-thumb {

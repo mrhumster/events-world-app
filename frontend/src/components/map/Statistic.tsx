@@ -2,6 +2,7 @@ import React from "react";
 import {ChartData} from "chart.js";
 import {Bar} from "react-chartjs-2";
 import styles from "./styles.module.css";
+import darkstyles from "./dark.styles.module.css";
 
 import {
     Chart as ChartJS,
@@ -21,6 +22,7 @@ import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
 import {useGetStatisticQuery} from "../../services/airQuality";
 import {MarkerIFace} from "./Map";
 import {AirQualityResponseIFace} from "../../types/AirQualityResponse";
+import {useGetUserDataQuery} from "../../services/backend";
 
 ChartJS.register(
     CategoryScale,
@@ -72,6 +74,8 @@ function TableData(props: TableDataPropsIFace) {
 export const Statistic = (props:StatisticProps) => {
     let coordinates = props.object.latlng
     const { data,isLoading } = useGetStatisticQuery(coordinates)
+    const UserData = useGetUserDataQuery({})
+    const current_theme = UserData.data?.data[0].theme
 
     const getLineData = (initialData:number[], lengthOfDataChunks:number) => {
         const numOfChunks = Math.ceil(initialData.length / lengthOfDataChunks);
@@ -116,7 +120,9 @@ export const Statistic = (props:StatisticProps) => {
             },
             responsive: true,
             maintainAspectRatio: false,
-
+            chartArea: {
+                backgroundColor: 'rgba(251, 85, 85, 1)'
+            }
         }
 
         const chart_data: ChartData = {
@@ -132,13 +138,15 @@ export const Statistic = (props:StatisticProps) => {
                     label: 'Частицы 2.5 мкм',
                     data: data.hourly.pm2_5,
                     borderWidth: 2,
-                    borderColor: "rgba(115,117,216,0.55)",
+                    borderColor: current_theme === 'dark' ? "rgba(115,117,216,0.55)" : "rgba(15,17,16,0.55)",
+                    backgroundColor: current_theme === 'dark' ? "rgba(115,117,216,0.55)" : "rgba(15,17,16,0.55)",
                 },
                 {
                     label: 'Частицы 10 мкм',
                     data: data.hourly.pm10,
                     borderWidth: 2,
                     borderColor: "rgba(255,115,115,0.5)",
+                    backgroundColor: current_theme === 'dark' ? "rgba(115,117,216,0.55)" : ["rgba(15,17,16,0.55)"],
                 },
 
                 {
@@ -146,6 +154,7 @@ export const Statistic = (props:StatisticProps) => {
                     data: lineDataPM2_5,
                     type: 'line',
                     borderColor: "#7375D8",
+                    backgroundColor: current_theme === 'dark' ? "rgba(115,117,216,0.55)" : "rgba(15,17,16,0.55)",
                     fill: false,
                     borderWidth: 2,
                     order: 1
@@ -155,6 +164,7 @@ export const Statistic = (props:StatisticProps) => {
                     data: lineDataPM10,
                     type: 'line',
                     borderColor: "#FF7373",
+                    backgroundColor: current_theme === 'dark' ? "rgba(115,117,216,0.55)" : "rgba(15,17,16,0.55)",
                     fill: false,
                     borderWidth: 2,
                     order: 1
@@ -164,7 +174,7 @@ export const Statistic = (props:StatisticProps) => {
 
 
         // @ts-ignore
-        bar = <Bar options={options} data={chart_data} />;
+        bar = <Bar options={options} data={chart_data} className={current_theme}/>;
         table = <TableData data={data}></TableData>
     }
 
@@ -179,7 +189,7 @@ export const Statistic = (props:StatisticProps) => {
     }
 
     return (
-        <div className={styles.popup_content}>
+        <div className={styles.popup_content} data-bs-theme={current_theme}>
             <p className="p-2 m-0 text-center">Прогноз по содержанию твердых частиц в воздухе</p>
             <span className="fst-italic p-2"><FontAwesomeIcon icon={faLocationDot} />{' '}{data.latitude} {data.longitude}</span>
             <Tabs defaultActiveKey="diagram" className="mb-0" fill>

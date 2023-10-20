@@ -1,10 +1,12 @@
-import React, {useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {LayersControl, MapContainer, TileLayer } from "react-leaflet";
 
 import styles from './styles.module.css'
 import 'leaflet/dist/leaflet.css';
 import { MarkerList } from './MarkerList';
 import {MapEvents} from './MapEvents'
+import {current} from "@reduxjs/toolkit";
+import {useGetUserDataQuery} from "../../services/backend";
 
 const defaultPosition = {
   lat: 55.75,
@@ -30,15 +32,16 @@ export const Map = (props:MapProps) => {
     const {setShowSearch, markerList, setMarkerList} = props
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [loc, setLoc] = useState<[number, number]>([defaultPosition.lat, defaultPosition.lng]);
+    const mapRef = useRef(null)
 
     return (
-        <MapContainer className={styles.map}
-                      center={loc}
+        <MapContainer center={loc}
                       zoom={defaultPosition.zoom}
                       scrollWheelZoom={true}
                       attributionControl={false}
                       zoomControl={false}
                       doubleClickZoom={false}
+                      ref={mapRef}
         >
             <LayersControl position="bottomright">
 

@@ -15,13 +15,14 @@ export const SearchInput = (props:SearchInputProps) => {
     useHotkeys('ctrl+k', () => setShowSearch(true), { preventDefault: true })
 
     return (
-        <Button variant="outline-primary" className="ms-3 rounded-5" onClick={handleClick}>
+        <div className="flex-fill">
+        <Button variant="outline-primary" className="rounded-5" onClick={handleClick}>
             <Container className="d-flex align-items-center justify-content-center px-0">
             <FontAwesomeIcon icon={faMagnifyingGlass}/>
             <span className={styles.search_button_text}>Поиск</span>
             <kbd className="bg-primary mx-1">Ctrl</kbd><kbd className="bg-primary">K</kbd>
             </Container>
         </Button>
-
+        </div>
     )
 }

@@ -3,6 +3,7 @@ import {Statistic} from "./Statistic";
 import React, {useEffect, useRef} from "react";
 import L from "leaflet";
 import {useGetUserDataQuery} from "../../services/backend";
+import {useMap} from "usehooks-ts";
 
 const icon: L.Icon<L.IconOptions> = L.icon({
         iconUrl: require('../../images/pin_red.png'),
@@ -16,7 +17,7 @@ export const MarkerComponent = (props: any) => {
     const markerRef = useRef(null)
     const UserData = useGetUserDataQuery({})
     const current_theme = UserData.data?.data[0].theme
-
+    useMap();
     useEffect(() => {
         const marker = markerRef.current
         if (marker) {

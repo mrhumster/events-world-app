@@ -1,12 +1,8 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {useRef, useState} from "react";
 import {LayersControl, MapContainer, TileLayer } from "react-leaflet";
-
-import styles from './styles.module.css'
 import 'leaflet/dist/leaflet.css';
 import { MarkerList } from './MarkerList';
 import {MapEvents} from './MapEvents'
-import {current} from "@reduxjs/toolkit";
-import {useGetUserDataQuery} from "../../services/backend";
 
 const defaultPosition = {
   lat: 55.75,

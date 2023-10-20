@@ -2,7 +2,6 @@ import React from "react";
 import {ChartData} from "chart.js";
 import {Bar} from "react-chartjs-2";
 import styles from "./styles.module.css";
-import darkstyles from "./dark.styles.module.css";
 
 import {
     Chart as ChartJS,

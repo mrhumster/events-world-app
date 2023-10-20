@@ -135,40 +135,41 @@ export const Statistic = (props:StatisticProps) => {
             ),
             datasets: [
                 {
-                    label: 'Частицы 2.5 мкм',
-                    data: data.hourly.pm2_5,
-                    borderWidth: 2,
-                    borderColor: current_theme === 'dark' ? "rgba(115,117,216,0.55)" : "rgba(15,17,16,0.55)",
-                    backgroundColor: current_theme === 'dark' ? "rgba(115,117,216,0.55)" : "rgba(15,17,16,0.55)",
-                },
-                {
-                    label: 'Частицы 10 мкм',
-                    data: data.hourly.pm10,
-                    borderWidth: 2,
-                    borderColor: "rgba(255,115,115,0.5)",
-                    backgroundColor: current_theme === 'dark' ? "rgba(115,117,216,0.55)" : ["rgba(15,17,16,0.55)"],
-                },
-
-                {
                     label: 'Среднее за сутки 2.5 мкм',
                     data: lineDataPM2_5,
                     type: 'line',
-                    borderColor: "#7375D8",
-                    backgroundColor: current_theme === 'dark' ? "rgba(115,117,216,0.55)" : "rgba(15,17,16,0.55)",
+                    borderColor: current_theme === 'dark' ? "rgb(13,109,251)" : "rgb(13,109,251)",
+                    backgroundColor: current_theme === 'dark' ? "rgb(13,109,251)" : "rgb(13,109,251)",
                     fill: false,
-                    borderWidth: 2,
-                    order: 1
+                    borderWidth: 4,
+                    order: 1,
+                    pointStyle: false,
+                    tension: 0.1
                 },
                 {
                     label: 'Среднее за сутки 10 мкм',
                     data: lineDataPM10,
                     type: 'line',
-                    borderColor: "#FF7373",
-                    backgroundColor: current_theme === 'dark' ? "rgba(115,117,216,0.55)" : "rgba(15,17,16,0.55)",
+                    borderColor: current_theme === 'dark' ? "rgb(255,64,23)" : "rgb(255,64,23)",
+                    backgroundColor: current_theme === 'dark' ? "rgb(255,64,23)" : "rgb(255,64,23)",
                     fill: false,
-                    borderWidth: 2,
-                    order: 1
+                    borderWidth: 4,
+                    order: 1,
+                    pointStyle: false,
+                    tension: 0.1
                 },
+                {
+                    label: 'Частицы 2.5 мкм',
+                    data: data.hourly.pm2_5,
+                    borderWidth: 0,
+                    backgroundColor: current_theme === 'dark' ? "rgb(13,109,251)" : "rgb(13,109,251)",
+                },
+                {
+                    label: 'Частицы 10 мкм',
+                    data: data.hourly.pm10,
+                    borderWidth: 0,
+                    backgroundColor: current_theme === 'dark' ? "rgb(255,64,23)" : ["rgb(255,64,23)"],
+                }
             ]
         }
 

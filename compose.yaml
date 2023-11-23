@@ -38,6 +38,7 @@ services:
       - backend
       - frontend
       - mongo
+      - mongo-express
     networks:
       - event-world-network
   mongo:
@@ -61,3 +62,13 @@ services:
       - event-world-network
     depends_on:
       - mongo
+
+  cypress:
+    image: cypress/included:latest
+    depends_on:
+      - frontend
+    working_dir: /e2e
+    volumes:
+      - ./frontend:/e2e
+    networks:
+      - event-world-network

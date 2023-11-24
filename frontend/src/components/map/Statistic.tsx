@@ -71,14 +71,14 @@ function TableData(props: TableDataPropsIFace) {
 }
 
 export const Statistic = (props:StatisticProps) => {
-    let coordinates = props.object.latlng
+    const coordinates = props.object.latlng
     const { data,isLoading } = useGetStatisticQuery(coordinates)
     const UserData = useGetUserDataQuery({})
     const current_theme = UserData.data?.data[0].theme
 
     const getLineData = (initialData:number[], lengthOfDataChunks:number) => {
         const numOfChunks = Math.ceil(initialData.length / lengthOfDataChunks);
-        let dataChunks:number[][] = [];
+        const dataChunks:number[][] = [];
 
         for (let i = 0; i < numOfChunks; i++) dataChunks[i] = [];
 

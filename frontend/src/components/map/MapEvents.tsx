@@ -1,7 +1,6 @@
 import {useMapEvent} from "react-leaflet";
 import React from "react";
 import {MarkerIFace} from "./Map";
-import {useMap} from "usehooks-ts";
 
 
 interface MapEventsProps {
@@ -20,7 +19,7 @@ export function MapEvents(props:MapEventsProps) {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const doubleClickHandler = useMapEvent('dblclick', (e) => {
 
-        let item:MarkerIFace = {'latlng': {'lat': e.latlng.lat, 'lng': e.latlng.lng}}
+        const item:MarkerIFace = {'latlng': {'lat': e.latlng.lat, 'lng': e.latlng.lng}}
 
         setMarkerList((prev:MarkerIFace[] | undefined) => {
             if (prev) {return [...prev, item]}

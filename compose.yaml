@@ -65,10 +65,15 @@ services:
 
   cypress:
     image: cypress/included:latest
+    command: "--browser chrome"
     depends_on:
       - frontend
     working_dir: /e2e
     volumes:
       - ./frontend:/e2e
+    environment:
+      - CYPRESS_username=billy
+      - CYPRESS_email=billy@domain.ru
+      - CYPRESS_password=secret
     networks:
       - event-world-network

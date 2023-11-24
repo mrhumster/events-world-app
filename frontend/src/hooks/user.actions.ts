@@ -38,7 +38,7 @@ export function useUserActions() {
                 'Content-Type': 'application/x-www-form-urlencoded'
             }
         }
-        return axios.post(`${baseURL}/users/token`, params, config)
+        return axios.post(`/api/users/token`, params, config)
             .then((res) => {
                 setUserData(res.data);
                 navigate("/")
@@ -46,7 +46,7 @@ export function useUserActions() {
     }
 
     function register(data: SignUpDataIFace) {
-        return axios.post(`${baseURL}/users/create`, data)
+        return axios.post(`/api/users/create`, data)
             .then((res) => {
                 setUserData(res.data);
                 navigate("/")

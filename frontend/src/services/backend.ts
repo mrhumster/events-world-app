@@ -13,7 +13,7 @@ const baseQuery = fetchBaseQuery({
 )
 
 const baseQueryWithErrorHandler: BaseQueryFn = async (args, api, extraOptions) => {
-    let result = await baseQuery(args, api, extraOptions)
+    const result = await baseQuery(args, api, extraOptions)
     if (result.error) {
         let text
         if (isErrorWithDetail(result.error.data)) {

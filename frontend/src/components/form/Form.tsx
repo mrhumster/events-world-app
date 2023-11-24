@@ -32,17 +32,21 @@ export const HomeForm = (props: FormProps) => {
 
     const handleError = (err: ResponseError) => {
         let text
-        if (err.response.status === 401) {
-           text = err.response.data.detail
-        } else if (err.response.status === 502) {
-            text = 'Похоже произошла ошибка. Свяжитесь с администратором'
+        if (err.response && 'status' in err.response) {
+            if (err.response.status === 401) {
+                text = err.response.data.detail
+            } else if (err.response.status === 502) {
+                text = 'Похоже произошла ошибка. Свяжитесь с администратором'
+            } else if (err.response.status === 422) {
+                text = err.response.data.detail
+            }
+            dispatch(showToast({
+                show: true,
+                title: 'Ошибка',
+                text: text,
+                type: 'danger'
+            }))
         }
-        dispatch(showToast({
-            show: true,
-            title: 'Ошибка',
-            text: text,
-            type: 'danger'
-        }))
         return false
     }
 
@@ -54,11 +58,7 @@ export const HomeForm = (props: FormProps) => {
                     username: username.value,
                     password: password.value,
                 };
-                userActions.login(data).catch((err) => {
-                    if (err.message) {
-                        handleError(err)
-                    }
-                });
+                userActions.login(data).then();
 
             }
         } else if (type === FormType.signup) {
@@ -102,7 +102,7 @@ export const HomeForm = (props: FormProps) => {
     }
 
     const validatePassword2 = (password2: ValidateString) => {
-        return password2.value === password.value
+        return password2.value === password.value && password2
     }
 
     const validateUsername = (username: ValidateString) => {
@@ -118,7 +118,7 @@ export const HomeForm = (props: FormProps) => {
                 }
             })
         }
-    }, [password])
+    }, [password, password2])
 
     useEffect(():void => {
         if (!validatePassword2(password2) && !password2.error) {
@@ -129,7 +129,7 @@ export const HomeForm = (props: FormProps) => {
                 }
             })
         }
-    }, [password2])
+    }, [password, password2])
 
     useEffect(():void => {
         if (!validateEmail(email) && !email.error) {
@@ -163,14 +163,15 @@ export const HomeForm = (props: FormProps) => {
                     <span>или зарегистрируй свой аккаунт</span>
 
                     <input className={component.login_form} type="text" placeholder="Имя пользователя"
+                           data-cy="loginUserName"
                            onChange={(e) => handleChangeUsername(e)}/>
-                    <small className={component.error}>{username.error}</small>
+                    <small className={component.error} data-cy="loginUserNameFeedBack">{username.error}</small>
 
                     <input className={component.login_form} type="password" placeholder="Пароль"
+                           data-cy="loginPassword"
                            onChange={(e) => handleChangePassword(e)}/>
-                    <small className={component.error}>{password.error}</small>
+                    <small className={component.error} data-cy="loginPasswordFeedBack">{password.error}</small>
 
-                    {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
                     <a className={component.login_form} href="#">Забыли пароль</a>
                     <button className={styles.loging_form} id="button_login" type="submit">Войти</button>
                 </form>
@@ -181,22 +182,26 @@ export const HomeForm = (props: FormProps) => {
                 <SocialContainer/>
                 <span>или используй свою почту для входа</span>
                 <input className={component.login_form} type="text" placeholder="Имя пользователя"
+                       data-cy="registerUserName"
                        onChange={(e) => handleChangeUsername(e)}></input>
-                <small className={component.error}>{username.error}</small>
+                <small className={component.error} data-cy="registerUserNameFeedBack">{username.error}</small>
 
                 <input className={component.login_form} type="email" placeholder="Почта"
+                       data-cy="registerEmail"
                        onChange={(e) => handleChangeEmail(e)}/>
-                <small className={component.error}>{email.error}</small>
+                <small className={component.error} data-cy="registerEmailFeedBack">{email.error}</small>
 
                 <input className={component.login_form} type="password" placeholder="Пароль"
+                       data-cy="registerPassword"
                        onChange={(e) => handleChangePassword(e)}/>
-                <small className={component.error}>{password.error}</small>
+                <small className={component.error} data-cy="registerPasswordFeedBack">{password.error}</small>
 
                 <input className={component.login_form} type="password" placeholder="Повтор пароля"
-                           onChange={(e) => handleChangePassword2(e)}/>
-                    <small className={component.error}>{password2.error}</small>
+                       data-cy="registerRePassword"
+                       onChange={(e) => handleChangePassword2(e)}/>
+                    <small className={component.error} data-cy="registerRePasswordFeedBack">{password2.error}</small>
 
-                <button className={styles.loging_form} id="button_signup" type="submit">Зарегистрировать</button>
+                <button className={styles.loging_form} id="button_signup" data-cy="registerSubmit" type="submit">Зарегистрировать</button>
             </form>
             break
     }

@@ -61,6 +61,7 @@ export function Navigationbar(props:NavigationbarProps) {
                   <NavDropdown menuVariant="light"
                                title={
                                    <Button size="sm" variant="link"
+                                           data-cy="navUser"
                                            className="text-uppercase text-decoration-none link-offset-3">
                                        <FontAwesomeIcon icon={faCircleUser}
                                                         size='xl'/>{' '}{user?.username}
@@ -71,6 +72,7 @@ export function Navigationbar(props:NavigationbarProps) {
                                   <div><FontAwesomeIcon icon={faCircleUser} size='2xl'
                                                         style={{color: "#404040"}}/></div>
                                   <Nav.Link className="inline"
+                                            data-cy="navEmail"
                                             href={'mailto:' + user?.email}>{user?.email}</Nav.Link>
                               </Card.Body>
                           </Card>

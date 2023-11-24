@@ -1,11 +1,13 @@
 from datetime import datetime, timezone, timedelta
 
-from fastapi import APIRouter, Body, Depends, HTTPException, status
+from fastapi import APIRouter, Body, Depends, HTTPException, status, Request
 from fastapi.encoders import jsonable_encoder
 from fastapi.security import OAuth2PasswordRequestForm
+from starlette.responses import JSONResponse
+from uvicorn.server import logger
 
 from authorisation.auth import authenticate_user, create_access_token, create_password_hash, get_current_active_user
-from utils.db import add_user, retrieve_user, retrieve_users, update_user, get_user
+from utils.db import add_user, retrieve_user, retrieve_users, update_user, get_user, delete_user
 from utils.environment import Config
 from utils.schema import ErrorResponseModel, ResponseModel, UserSchema, UpdateUserModel, Token, \
     UserRegister
@@ -54,6 +56,17 @@ async def update_user_data(username: str, req: UpdateUserModel = Body(...), curr
         "There was an error updating the student data.",
     )
 
+@router.delete("/{username}")
+async def delete_user_by_username(username: str, request: Request, current_user: User = Depends(get_current_active_user)):
+    if username == current_user['username']:
+        user = await retrieve_user(username)
+        if await delete_user(user['id']):
+            return JSONResponse('User deleted', status_code=status.HTTP_200_OK)
+    else:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            headers={"WWW-Authenticate": "Bearer"}
+        )
 
 @router.post("/token", response_model=Token)
 async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends()):
@@ -86,9 +99,7 @@ async def create_user(register_form: UserRegister):
     if check_users:
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail={
-                'error': f'Пользователь с именем "{register_form.username}" уже существует.'
-            },
+            detail=f'Пользователь с именем "{register_form.username}" уже существует.',
             headers={'WWW-Authenticate': 'Bearer'}
         )
 

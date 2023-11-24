@@ -2,11 +2,9 @@ module.exports = {
     "env": {
         "browser": true,
         "es2021": true,
-        "jest": true
     },
     "extends": [
-        "eslint:recommended",
-        "plugin:react/recommended"
+        "plugin:@typescript-eslint/recommended"
     ],
     "overrides": [
         {
@@ -21,6 +19,7 @@ module.exports = {
             }
         }
     ],
+    "parser": "@typescript-eslint/parser",
     "parserOptions": {
         "ecmaVersion": "latest",
         "sourceType": "module"
@@ -29,5 +28,9 @@ module.exports = {
         "react"
     ],
     "rules": {
+        "@typescript-eslint/no-unused-vars": "off",
+        "no-unused-vars": "off",
+        "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/ban-ts-comment": "off"
     }
 }

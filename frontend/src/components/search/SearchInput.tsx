@@ -16,7 +16,7 @@ export const SearchInput = (props:SearchInputProps) => {
 
     return (
         <div className="flex-fill">
-        <Button variant="outline-primary" className="rounded-5" onClick={handleClick}>
+        <Button variant="outline-primary" className="rounded-5" onClick={handleClick} data-cy="searchButton">
             <Container className="d-flex align-items-center justify-content-center px-0">
             <FontAwesomeIcon icon={faMagnifyingGlass}/>
             <span className={styles.search_button_text}>Поиск</span>

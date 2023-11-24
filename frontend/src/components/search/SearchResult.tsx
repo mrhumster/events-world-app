@@ -36,7 +36,7 @@ export const SearchResult = (props:SearchResultProps) => {
         setSearch(e.currentTarget.value)
     }
     const {data, isLoading} = useGetLatLngQuery(debouncedSearch, {skip: debouncedSearch === ''})
-    const current_theme = UserData.data.data[0].theme
+    const current_theme = UserData.data?.data[0].theme ? UserData.data.data[0].theme : 'light'
 
     useEffect(() => {
         if (search.length === 0) {
@@ -62,7 +62,7 @@ export const SearchResult = (props:SearchResultProps) => {
             animate={{ opacity: 1, scale: 1, y: 0, x: 0 }}
             transition={{ duration: 0.2 }}
             className={[styles.search_result, 'shadow-lg'].join(' ')}>
-            <Card data-bs-theme={current_theme}>
+            <Card data-bs-theme={current_theme} data-cy="searchResult">
                 <Card.Header>
                     <InputGroup>
                         <InputGroup.Text id="btnGroupAddon">
@@ -70,6 +70,7 @@ export const SearchResult = (props:SearchResultProps) => {
                                 <FontAwesomeIcon icon={faMagnifyingGlass}/>}
                         </InputGroup.Text>
                         <Form.Control
+                            data-cy="searchInput"
                             autoFocus
                             type="text"
                             placeholder="Поиск"

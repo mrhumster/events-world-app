@@ -4,7 +4,7 @@ import {showToast} from "./toastSlice";
 import {isErrorWithDetail} from "./helpers";
 
 const baseQuery = fetchBaseQuery({
-        baseUrl: `https://${process.env.REACT_APP_HOSTNAME}/api/`,
+        baseUrl: `/api/`,
         prepareHeaders: (headers: Headers) => {
             headers.set("Authorization", `Bearer ${getAccessToken()}`)
             return headers

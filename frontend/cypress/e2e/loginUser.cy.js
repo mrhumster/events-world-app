@@ -21,12 +21,30 @@ beforeEach(function setAuth () {
 })
 
 
-describe('Login User', ()=>{
-    it('Login exist user', ()=>{
+describe('Basic Usage', ()=>{
+    it('Login exist user', ()=> {
         cy.get('[data-cy="navUser"]').contains(Cypress.env('username')).click()
         cy.get('[data-cy="navEmail"]').contains(Cypress.env('email'))
+        cy.get('[data-cy="navUser"]').contains(Cypress.env('username')).click()
+    })
+    it('Search', () => {
+        cy.get('[data-cy="searchButton"]').click()
+        cy.wait(500)
+        cy.get('[data-cy="searchResult').should('be.visible')
+        cy.get('[data-cy="searchInput"]').type('Омск')
+        cy.wait(5000)
+        cy.contains('73.368221 54.989347').click()
+        cy.wait(5000)
+    })
+    it('History', () => {
+        cy.get('[data-cy="searchButton"]').click()
+        cy.get('[data-cy="searchResult').should('be.visible')
+        cy.get('span').contains('Омск')
+        // Извинясь за не полное покрытие. Больше времени для тестирования нет
     })
 })
+
+
 
 after(function deleteUser () {
     cy.request({

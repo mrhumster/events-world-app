@@ -14,9 +14,23 @@
 
 ## Запуск
 
-```
-docker-compose up -d
+```shell
+> docker-compose up -d
 ```
 
 Эта команда запустит Docker Compose в режиме демона (в фоне). Это активирует все службы, определенные в файле docker-compose.yml.
 
+## Cypress тестирование
+
+Для тестирования необходимо отдельно запустить контейнера `cypress`
+
+```shell
+> docker-compose up сypress
+```
+
+Результат прохождения тестирования будет в логе контейнера.
+Видео прохождения тестирования будет в каталоге `./frontend/cypress/videos`
+
+## Story book
+
+Story book запускается вместе с nginx и доступен по url `https://domain/sb/` 

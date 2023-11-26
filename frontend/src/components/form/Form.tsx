@@ -16,7 +16,7 @@ export enum FormType {
     signup = 'signup'
 }
 
-interface FormProps {
+export interface FormProps {
     action: string,
     type: FormType,
 }

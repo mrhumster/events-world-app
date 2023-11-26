@@ -3,9 +3,7 @@ module.exports = {
         "browser": true,
         "es2021": true,
     },
-    "extends": [
-        "plugin:@typescript-eslint/recommended"
-    ],
+    "extends": ["plugin:@typescript-eslint/recommended", "plugin:storybook/recommended"],
     "overrides": [
         {
             "env": {

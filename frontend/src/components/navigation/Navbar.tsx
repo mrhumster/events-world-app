@@ -9,7 +9,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCircleUser} from "@fortawesome/free-regular-svg-icons";
 import {useGetUserDataQuery, useUpdateUserMutation} from "../../services/backend";
 
-interface NavigationbarProps {
+export interface NavigationbarProps {
     setShowSearch? :React.Dispatch<React.SetStateAction<boolean>>
 }
 

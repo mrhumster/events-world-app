@@ -1,5 +1,6 @@
 import React from 'react';
 import './App.css';
+import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 
 import {Route, Routes} from "react-router-dom";
 import {ProtectedRoute} from "./routes";

@@ -39,6 +39,7 @@ services:
       - frontend
       - mongo
       - mongo-express
+      - story
     networks:
       - event-world-network
   mongo:
@@ -77,3 +78,13 @@ services:
       - CYPRESS_password=secret
     networks:
       - event-world-network
+
+  story:
+    build: ./frontend
+    volumes:
+      - ./frontend:/frontend
+    env_file:
+      - .env
+    networks:
+      - event-world-network
+    command: sh -c "npm run storybook"

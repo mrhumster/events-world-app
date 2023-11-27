@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import {FormType, HomeForm, Toaster } from "../../components";
+import logger from '../../logger/logger';
 
 import styles from './styles.module.css';
 
@@ -20,6 +21,7 @@ export const Login = () => {
     }
     const onClickSignInHandler = () => {
         setRightPanelActive(prevState => !prevState)
+        logger.log('Button clicked');
     }
     return(
         <div className={styles.login_page}>

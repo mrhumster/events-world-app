@@ -2,6 +2,7 @@ import {BaseQueryFn, createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/rea
 import {getAccessToken, getUser} from "../hooks";
 import {showToast} from "./toastSlice";
 import {isErrorWithDetail} from "./helpers";
+import logger from "../logger/logger";
 
 const baseQuery = fetchBaseQuery({
         baseUrl: `/api/`,
@@ -15,6 +16,7 @@ const baseQuery = fetchBaseQuery({
 const baseQueryWithErrorHandler: BaseQueryFn = async (args, api, extraOptions) => {
     const result = await baseQuery(args, api, extraOptions)
     if (result.error) {
+        logger.log(`Произошла сетевая ошибка ${JSON.stringify(result.error)}`);
         let text
         if (isErrorWithDetail(result.error.data)) {
             text = result.error.data.detail
@@ -29,7 +31,7 @@ export const backendApi = createApi({
     baseQuery: baseQueryWithErrorHandler,
     endpoints: (builder) => ({
         getHistoryByName: builder.query({
-            query: (username) => `/history/${username}`,
+            query: (username) => `/history/${username}`
         }),
         addHistoryItem: builder.mutation({
             query: (newHistoryItem) => ({
@@ -56,6 +58,9 @@ export const backendApi = createApi({
             query: () => ({
                 url: `/users/${getUser()?.username}`
             })
+        }),
+        getLoggerItem: builder.query({
+            query: () => '/log/'
         })
     })
 })
@@ -65,5 +70,6 @@ export const {
     useAddHistoryItemMutation,
     useDeleteHistoryMutation,
     useUpdateUserMutation,
-    useGetUserDataQuery
+    useGetUserDataQuery,
+    useGetLoggerItemQuery
 } = backendApi

@@ -21,7 +21,7 @@ export const Login = () => {
     }
     const onClickSignInHandler = () => {
         setRightPanelActive(prevState => !prevState)
-        logger.log('Button clicked');
+        logger.log('Пользователь нажал на кнопку регистрации');
     }
     return(
         <div className={styles.login_page}>

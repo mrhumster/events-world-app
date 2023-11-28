@@ -5,10 +5,14 @@ import styles from './styles.module.css';
 import image from '../../images/oblaka.jpg'
 import { Navigationbar } from "../../components";
 import {useGetUserDataQuery} from "../../services/backend";
+import logger from "../../logger/logger";
+import {getUser} from "../../hooks";
 
 export const About = () => {
     const {data} = useGetUserDataQuery({})
     const current_theme = data?.data[0].theme
+    const user = getUser()
+    logger.log(`${user?.username} открыл страницу "О сервисе"`)
     return (
         <main className={current_theme === 'light' ? styles.light : styles.dark}>
             <Navigationbar></Navigationbar>

@@ -10,6 +10,7 @@ client = motor.motor_asyncio.AsyncIOMotorClient(Config.MONGO_URI)
 database = client.users
 user_collection = database.get_collection("users_collection")
 history_collection = database.get_collection("history_query")
+logger_collection = database.get_collection("logger")
 
 
 def user_helper(user) -> dict:
@@ -28,6 +29,11 @@ def history_helper(history) -> dict:
         "username": history["username"],
         "query": history["query"],
         "date": history["date"]
+    }
+def logger_helper(item) -> dict:
+    return {
+        "datetime": item['datetime'],
+        "description": item['desc']
     }
 
 async def add_history_item(history_data: dict) -> dict:
@@ -96,3 +102,14 @@ async def get_user(username: str) -> dict | bool:
     if user:
         return user_helper(user)
     return False
+
+async def add_logger_item(item_data: dict):
+    item = await logger_collection.insert_one(item_data)
+    new_item = await logger_collection.find_one({"_id": item.inserted_id})
+    return logger_helper(new_item)
+
+async def get_logger_items():
+    items = []
+    async for item in logger_collection.find().sort("datetime").limit(100):
+        items.append(logger_helper(item))
+    return items

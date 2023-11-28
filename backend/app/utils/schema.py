@@ -10,6 +10,9 @@ class HistoryBaseSchema(BaseModel):
 class HistorySchema(HistoryBaseSchema):
     date: datetime
 
+class LoggerSchema(BaseModel):
+    desc: str = Field(max_length=2024)
+
 
 class UserSchema(BaseModel):
     username: str = Field(...)

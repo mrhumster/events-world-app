@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from routes.user import router as UserRouter
 from routes.history import router as HistoryRouter
+from routes.logger_route import router as LoggerRouter
 from utils.environment import Config
 
 
@@ -28,6 +29,7 @@ app.add_middleware(
 
 app.include_router(UserRouter, tags=['Users'], prefix="/users")
 app.include_router(HistoryRouter, tags=['History'], prefix="/history")
+app.include_router(LoggerRouter, tags=['Logger'], prefix="/log")
 
 @app.get("/", tags=["Root"])
 async def read_root():

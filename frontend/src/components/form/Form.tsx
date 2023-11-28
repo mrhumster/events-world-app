@@ -6,6 +6,7 @@ import { useUserActions } from "../../hooks"
 import {showToast} from "../../services/toastSlice";
 import {useDispatch} from "react-redux";
 import {ResponseError} from "../../types/ResponseType";
+import logger from "../../logger/logger";
 
 export interface ValidateString {
     value: string;
@@ -40,6 +41,7 @@ export const HomeForm = (props: FormProps) => {
             } else if (err.response.status === 422) {
                 text = err.response.data.detail
             }
+            logger.log(`Произошла сетевая ошибка! \n ${text}`);
             dispatch(showToast({
                 show: true,
                 title: 'Ошибка',
@@ -58,6 +60,7 @@ export const HomeForm = (props: FormProps) => {
                     username: username.value,
                     password: password.value,
                 };
+                logger.log(`Пользователь пробует залогиниться под именем ${data.username}`);
                 userActions.login(data).then();
 
             }
@@ -68,8 +71,10 @@ export const HomeForm = (props: FormProps) => {
                     password: password.value,
                     email: email.value
                 };
+                logger.log(`Пользователь пробует зарегистрироваться ${data.username} ${data.email}`);
                 userActions.register(data).catch((err) => {
                     if (err.message) {
+                        logger.log(`С регистрацией возникли проблемы: ${JSON.stringify(err.message)}`);
                         handleError(err)
                     }
                 });

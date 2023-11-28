@@ -8,6 +8,7 @@ import {ProtectedRoute} from "./routes";
 import {About, PageNotFound, Login, MapPage} from "./pages";
 import {store} from "./store/store";
 import {Provider} from "react-redux";
+import {Log} from "./logger";
 
 function App() {
     return (
@@ -20,6 +21,11 @@ function App() {
                 }/>
                 <Route path="/login/" element={<Login/>}/>
                 <Route path="/about" element={<About/>}/>
+                <Route path="/log" element={
+                    <ProtectedRoute>
+                        <Log />
+                    </ProtectedRoute>
+                } />
                 <Route path="*" element={<PageNotFound/>}/>
             </Routes>
         </Provider>

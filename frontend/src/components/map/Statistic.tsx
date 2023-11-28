@@ -72,7 +72,7 @@ function TableData(props: TableDataPropsIFace) {
 
 export const Statistic = (props:StatisticProps) => {
     const coordinates = props.object.latlng
-    const { data,isLoading } = useGetStatisticQuery(coordinates)
+    const { data, isLoading } = useGetStatisticQuery(coordinates)
     const UserData = useGetUserDataQuery({})
     const current_theme = UserData.data?.data[0].theme
 

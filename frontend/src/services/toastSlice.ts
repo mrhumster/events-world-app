@@ -1,4 +1,5 @@
 import {createSlice} from "@reduxjs/toolkit";
+import logger from "../logger/logger";
 
 export const toastSlice = createSlice({
     name: 'toast',
@@ -6,6 +7,7 @@ export const toastSlice = createSlice({
     },
     reducers: {
         showToast: (state: any, action) => {
+            logger.log(`Показано уведомление пользователю ${JSON.stringify(action.payload)}`);
             state.value = action.payload
         },
         closeToast: (state: any) => {

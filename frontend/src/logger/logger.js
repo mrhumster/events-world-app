@@ -12,7 +12,7 @@ class Logger {
   }
 }
 
-const loggerWorker = new Worker('logger.worker.js');
+const loggerWorker = new Worker('/logger.worker.js');
 const logger = new Logger(loggerWorker);
 
 export default logger;

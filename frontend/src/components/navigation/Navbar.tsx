@@ -8,6 +8,7 @@ import {faCloud, faMoon, faSun} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCircleUser} from "@fortawesome/free-regular-svg-icons";
 import {useGetUserDataQuery, useUpdateUserMutation} from "../../services/backend";
+import logger from "../../logger/logger";
 
 export interface NavigationbarProps {
     setShowSearch? :React.Dispatch<React.SetStateAction<boolean>>
@@ -21,7 +22,10 @@ export function Navigationbar(props:NavigationbarProps) {
     const [updateUser] = useUpdateUserMutation()
     const {data, refetch} = useGetUserDataQuery({})
     const current_theme = data?.data[0].theme
-    const handleLogout = () => userAction.logout()
+    const handleLogout = () => {
+      logger.log(`${user?.username} вышел из системы`)
+      userAction.logout()
+    }
     const isThisPath = (pathname: string) => location.pathname.match(`^${pathname}$`)
 
     const handlerChangeTheme = () => {
@@ -46,6 +50,8 @@ export function Navigationbar(props:NavigationbarProps) {
                 <Nav.Link href='/'>Карта</Nav.Link>}
               {isThisPath('/about') ? <Nav.Link active href='/about'>О сервисе</Nav.Link> :
                 <Nav.Link href='/about'>О сервисе</Nav.Link>}
+              {isThisPath('/log') ? <Nav.Link active href='/log'>Лог действий</Nav.Link> :
+                <Nav.Link href='/log'>Лог действий</Nav.Link>}
           </Nav>
 
           {isThisPath('/') && setShowSearch ? <SearchInput setShowSearch={setShowSearch}/> : <></>}

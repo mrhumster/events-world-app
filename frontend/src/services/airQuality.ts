@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import logger from "../logger/logger";
 
 export const airQualityApi = createApi({
     reducerPath: 'airQualityApi',
@@ -7,7 +8,7 @@ export const airQualityApi = createApi({
     }),
     endpoints: (builder) => ({
         getStatistic: builder.query({
-            query: (coordinates) => `?latitude=${coordinates.lat}&longitude=${coordinates.lng}&hourly=pm10,pm2_5`,
+            query: (coordinates) => `?latitude=${coordinates.lat}&longitude=${coordinates.lng}&hourly=pm10,pm2_5`
         })
     })
 })

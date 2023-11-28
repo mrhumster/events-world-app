@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {ChartData} from "chart.js";
 import {Bar} from "react-chartjs-2";
 import styles from "./styles.module.css";
@@ -22,6 +22,8 @@ import {useGetStatisticQuery} from "../../services/airQuality";
 import {MarkerIFace} from "./Map";
 import {AirQualityResponseIFace} from "../../types/AirQualityResponse";
 import {useGetUserDataQuery} from "../../services/backend";
+import logger from "../../logger/logger";
+import {getUser} from "../../hooks";
 
 ChartJS.register(
     CategoryScale,
@@ -44,6 +46,10 @@ interface TableDataPropsIFace {
 
 function TableData(props: TableDataPropsIFace) {
     const { data} = props
+    const user = getUser()
+    useEffect(()=> {
+        logger.log(`${user?.username} открыл статистику для объекта c координатами: ${data.latitude} ${data.longitude}`)
+    }, [])
     return (
         <Table striped className="border-start border-bottom">
            <thead>

@@ -8,6 +8,7 @@ import {MarkerIFace} from "../map";
 import {FeatureMemberItemIFace} from "../../types";
 import {useAddHistoryItemMutation, useGetHistoryByNameQuery} from "../../services/backend";
 import {getUser} from "../../hooks";
+import logger from "../../logger/logger";
 
 
 interface PositionProps {
@@ -47,6 +48,7 @@ export const SearchItem = (props:SearchItemProps) => {
     const {refetch} = useGetHistoryByNameQuery(user?.username)
 
     const handleClickResult = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        logger.log(`${user?.username} нажал на элемент выборки: ${geoObject.GeoObject.name}`)
         setShowSearch(false)
         setMarkerList((prev: MarkerIFace[] | undefined) => {
             if (prev) {

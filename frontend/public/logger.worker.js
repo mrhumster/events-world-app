@@ -15,7 +15,10 @@ self.addEventListener('message', (event) => {
 
           break;
       case 'clear':
-          // TODO: Очистка файла логов
+          fetch('api/log/', {
+              method: 'DELETE'
+          })
+              .then((response) => console.log('Лог очищен'))
           break;
       default:
           break;

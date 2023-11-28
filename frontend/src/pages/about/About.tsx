@@ -1,6 +1,6 @@
 
 import {Card, Container} from "react-bootstrap";
-import React from "react";
+import React, {useEffect} from "react";
 import styles from './styles.module.css';
 import image from '../../images/oblaka.jpg'
 import { Navigationbar } from "../../components";
@@ -12,7 +12,9 @@ export const About = () => {
     const {data} = useGetUserDataQuery({})
     const current_theme = data?.data[0].theme
     const user = getUser()
-    logger.log(`${user?.username} открыл страницу "О сервисе"`)
+    useEffect(() => {
+        logger.log(`${user?.username} открыл страницу "О сервисе"`)
+    }, [])
     return (
         <main className={current_theme === 'light' ? styles.light : styles.dark}>
             <Navigationbar></Navigationbar>

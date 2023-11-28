@@ -4,7 +4,7 @@ from fastapi import APIRouter
 from starlette import status
 from starlette.responses import JSONResponse
 
-from utils.db import add_logger_item, get_logger_items
+from utils.db import add_logger_item, get_logger_items, delete_logger_items
 
 router = APIRouter()
 
@@ -23,3 +23,8 @@ async def add_logger_data(request: Request):
 async def get_logger_data():
     items = await get_logger_items()
     return items
+
+@router.delete('/')
+async def erase_logger():
+    await delete_logger_items()
+    return JSONResponse(status_code=status.HTTP_200_OK, content='Лог очищен')

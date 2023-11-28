@@ -12,6 +12,8 @@ import { HistoryList } from "./HistoryList";
 import { motion } from "framer-motion"
 import {GeoObjectCollectionIFace} from "../../types/ResponseType";
 import {useGetUserDataQuery} from "../../services/backend";
+import logger from "../../logger/logger";
+import {getUser} from "../../hooks";
 
 
 interface SearchResultProps {
@@ -31,6 +33,7 @@ export const SearchResult = (props:SearchResultProps) => {
     const UserData = useGetUserDataQuery({})
     const [search, setSearch] = useState<string>('')
     const debouncedSearch = useDebounce<string>(search, 400)
+    const user = getUser()
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
         setSearch(e.currentTarget.value)
@@ -46,6 +49,7 @@ export const SearchResult = (props:SearchResultProps) => {
 
     useEffect(() => {
         if (data) {
+            logger.log(`${user?.username} отправил запрос на поиск локации: ${search}`)
             const fm: GeoObjectCollectionIFace = data.response.GeoObjectCollection
             setFeatureMember(fm.featureMember)
         }

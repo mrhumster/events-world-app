@@ -1,9 +1,11 @@
-import React from "react";
+import React, {useEffect} from "react";
 import styles from "./styles.module.css";
 import {Button, Container} from "react-bootstrap";
 import {faMagnifyingGlass} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {useHotkeys} from "react-hotkeys-hook";
+import logger from "../../logger/logger";
+import {getUser} from "../../hooks";
 
 interface SearchInputProps {
     setShowSearch: React.Dispatch<React.SetStateAction<boolean>>
@@ -11,8 +13,14 @@ interface SearchInputProps {
 
 export const SearchInput = (props:SearchInputProps) => {
     const {setShowSearch} = props
-    const handleClick = () => {setShowSearch(true)}
-    useHotkeys('ctrl+k', () => setShowSearch(true), { preventDefault: true })
+    const user = getUser()
+    const handleClick = () => {
+        logger.log(`${user?.username} нажал на кнопку поиска`)
+        setShowSearch(true)}
+    useHotkeys('ctrl+k', () => {
+        logger.log(`${user?.username} открыл поиск сочетанием ctrl+k`)
+        setShowSearch(true)
+    }, { preventDefault: true })
 
     return (
         <div className="flex-fill">

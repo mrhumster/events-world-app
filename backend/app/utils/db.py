@@ -113,3 +113,7 @@ async def get_logger_items():
     async for item in logger_collection.find().sort("datetime").limit(100):
         items.append(logger_helper(item))
     return items
+
+async def delete_logger_items():
+    await logger_collection.delete_many({})
+    return True

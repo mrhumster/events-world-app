@@ -33,4 +33,14 @@
 
 ## Story book
 
-Story book запускается вместе с nginx и доступен по url `https://domain/sb/` 
+Story book запускается вместе с nginx и доступен по url `https://localhost/sb/`
+
+## Логирование
+
+Реализовано логирование посредством `web workers`. Объекты логирования хранятся в 
+коллекции `mongo`
+
+## Mongo
+
+По адресу `http://localhost:8081` находится интерфейс `mongo-express`. 
+Для авторизации использовать пару `admin:pass`

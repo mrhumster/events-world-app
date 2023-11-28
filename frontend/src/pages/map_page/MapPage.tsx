@@ -5,6 +5,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import {MarkerIFace} from "../../components/map";
 import { FeatureMemberItemIFace } from "../../types";
 import {useGetUserDataQuery} from "../../services/backend";
+import {getUser} from "../../hooks";
+import logger from "../../logger/logger";
 
 
 export const MapPage = () => {
@@ -13,6 +15,11 @@ export const MapPage = () => {
     const [markerList, setMarkerList] = useState<MarkerIFace[] | undefined>()
     const UserData = useGetUserDataQuery({})
     const current_theme = UserData.data?.data[0].theme
+
+    const user = getUser()
+    useEffect(() => {
+        logger.log(`${user?.username} открыл страницу "Карта"`)
+    }, [])
 
     useEffect(() => {
         if (!showSearch) {

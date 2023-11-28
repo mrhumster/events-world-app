@@ -1,5 +1,7 @@
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
+import {useDispatch} from "react-redux";
+import {showToast} from "../services/toastSlice";
 
 interface LoginDataIFace {
     username: string,
@@ -24,6 +26,7 @@ interface UserDataIFace {
 
 export function useUserActions() {
     const navigate = useNavigate();
+    const dispatch = useDispatch()
     // const baseURL = `https://${process.env.REACT_APP_HOSTNAME}/api`;
 
     // Login user
@@ -39,10 +42,13 @@ export function useUserActions() {
             }
         }
         return axios.post(`/api/users/token`, params, config)
-            .then((res) => {
-                setUserData(res.data);
-                navigate("/")
-            });
+          .then((res) => {
+              setUserData(res.data);
+              navigate("/")
+          })
+          .catch((err) => {
+              dispatch(showToast({title: 'Ошибка', text: 'Неправильные учетные данный', type: 'danger'}))
+          })
     }
 
     function register(data: SignUpDataIFace) {
@@ -50,7 +56,11 @@ export function useUserActions() {
             .then((res) => {
                 setUserData(res.data);
                 navigate("/")
-            });
+            })
+          .catch((err) => {
+              console.log(err)
+              dispatch(showToast({title: 'Ошибка', text: err.response.data.detail, type: 'danger'}))
+          })
     }
 
     // Logout the user
